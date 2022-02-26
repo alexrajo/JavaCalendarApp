@@ -4,40 +4,36 @@ import java.util.Date;
 
 public abstract class CalendarElement {
 
-    private Date date;
+    private Date beginDate;
     private String title;
     private String description;
-    private boolean reccuring;
+    private boolean recurring;
 
-    public CalendarElement(Date date, String title, String description, boolean reccuring) {
-        this.date = date;
+    public CalendarElement(Date date, String title, String description, boolean recurring) {
+        this.beginDate = date;
         this.title = title;
         this.description = description;
-        this.reccuring = reccuring;
+        this.recurring = recurring;
     }
+
     public CalendarElement(Date date, String title, String description) {
-        this.date = date;
-        this.title = title;
-        this.description = description;
-        this.reccuring = false;
+        this(date, title, description, false);
     }
-    public CalendarElement(Date date, String title, boolean reccuring) {
-        this.date = date;
-        this.title = title;
-        this.reccuring = reccuring;
+
+    public CalendarElement(Date date, String title, boolean recurring) {
+        this(date, title, null, recurring);
     }
+
     public CalendarElement(Date date, String title) {
-        this.date = date;
-        this.title = title;
-        this.reccuring = false;
+        this(date, title, null, false);
     }
 
     public Date getDate() {
-        return date;
+        return beginDate;
     }
 
     public void setDate(Date date) {
-        this.date = date;
+        this.beginDate = date;
     }
 
     public String getTitle() {
@@ -57,10 +53,10 @@ public abstract class CalendarElement {
     }
 
     public boolean isReccuring() {
-        return reccuring;
+        return recurring;
     }
 
     public void setReccuring(boolean reccuring) {
-        this.reccuring = reccuring;
+        this.recurring = reccuring;
     }
 }
