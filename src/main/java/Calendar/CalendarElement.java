@@ -4,13 +4,14 @@ import java.util.Date;
 
 public abstract class CalendarElement {
 
-    private Date beginDate;
+    private Date date;
     private String title;
     private String description;
     private boolean recurring;
 
+    //Constructors
     public CalendarElement(Date date, String title, String description, boolean recurring) {
-        this.beginDate = date;
+        this.date = date;
         this.title = title;
         this.description = description;
         this.recurring = recurring;
@@ -28,12 +29,13 @@ public abstract class CalendarElement {
         this(date, title, null, false);
     }
 
+    //Public methods
     public Date getDate() {
-        return beginDate;
+        return date;
     }
 
     public void setDate(Date date) {
-        this.beginDate = date;
+        this.date = date;
     }
 
     public String getTitle() {
@@ -52,11 +54,11 @@ public abstract class CalendarElement {
         this.description = description;
     }
 
-    public boolean isReccuring() {
+    public boolean isRecurring() {
         return recurring;
     }
 
-    public void setReccuring(boolean reccuring) {
-        this.recurring = reccuring;
+    public void setRecurring(boolean recurring) {
+        this.recurring = recurring;
     }
 }
