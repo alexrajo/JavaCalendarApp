@@ -4,59 +4,57 @@ import java.util.Date;
 
 public class Event extends CalendarElement{
 
-    private Date startTime;
-    private Date endTime;
-    private boolean wholeDay;
+    //Defined in seconds after midnight:
+    private int startTime;
+    private int endTime;
+    //--
 
-    public Event(Date date, String title, String description, boolean reccuring, boolean wholeDay) {
-        super(date, title, description, reccuring);
-        if (wholeDay) {
-            //Sette starttid til 00:00 og slutttid 24:00
-        }
+    public Event(Date date, String title, String description, boolean recurring, int start, int end) {
+        super(date, title, description, recurring);
+        this.setStartTime(start);
+        this.setEndTime(end);
     }
 
-    public Event(Date date, String title, String description, boolean wholeDay) {
+    public Event(Date date, String title, String description, int start, int end) {
         super(date, title, description);
-        if (this.wholeDay) {
-            //Sette starttid til 00:00 og slutttid 24:00
-        }
+        this.setStartTime(start);
+        this.setEndTime(end);
     }
 
-    public Event(Date date, String title, boolean reccuring, boolean wholeDay) {
-        super(date, title, reccuring);
-        if (wholeDay) {
-            //Sette starttid til 00:00 og slutttid 24:00
-        }
+    public Event(Date date, String title, boolean recurring, int start, int end) {
+        super(date, title, recurring);
+        this.setStartTime(start);
+        this.setEndTime(end);
     }
 
-    public Date getStartTime() {
+    public Event(Date date, String title, int start, int end) {
+        super(date, title);
+        this.setStartTime(start);
+        this.setEndTime(end);
+    }
+
+    public int getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(int startTime) {
         this.startTime = startTime;
     }
 
-    public Date getEndTime() {
+    public int getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(int endTime) {
         this.endTime = endTime;
     }
 
     public boolean isWholeDay() {
-        return wholeDay;
+        return (this.getEndTime()-this.getStartTime() == 86400);
     }
 
-    public void setWholeDay(boolean wholeDay) {
-        this.wholeDay = wholeDay;
-    }
-
-    public Event(Date date, String title) {
-        super(date, title);
-        if (wholeDay) {
-            //Sette starttid til 00:00 og slutttid 24:00
-        }
+    public void setWholeDay() {
+        this.setStartTime(0);
+        this.setEndTime(86400);
     }
 }
