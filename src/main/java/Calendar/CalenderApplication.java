@@ -18,6 +18,7 @@ public class CalenderApplication extends Application {
         System.out.println("Starting application!");
         primaryStage.setTitle("Calendar");
         primaryStage.setScene(new Scene(FXMLLoader.load(getClass().getResource("App.fxml"))));
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 }
