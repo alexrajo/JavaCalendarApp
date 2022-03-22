@@ -1,31 +1,48 @@
 package Calendar;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public class ApplicationController {
     private Calendar calendar;
 
     @FXML
-    private GridPane CalGrid;
+    private GridPane calendarGrid;
 
     @FXML
     public void initialize() {
-        for (int i = 7; i < 37; i++) {
-            CalGrid.add(createCalElem(i-6), i % 7, i / 7);
+        loadCalendar(31);
+    }
+
+    @FXML
+    public void loadCalendar(int days) {
+        calendarGrid.setAlignment(Pos.CENTER);
+        calendarGrid.getChildren().clear();
+        for (int i = 0; i < days; i++) {
+            calendarGrid.add(createCalendarElement(i+1), i%7, i/7);
         }
     }
 
     @FXML
-    public Text createCalElem(int i) {
-        Text text = new Text(String.valueOf(i));
-        text.setX(50);
-        text.setY(50);
-        return text;
+    public Pane createCalendarElement(int i) {
+        Pane element = new Pane();
+        element.setScaleX(1);
+        element.setScaleY(1);
+
+        if (i%2==0) {
+            element.setStyle("-fx-background-color: #EEEEEE");
+        }
+
+        Text title = new Text(String.valueOf(i));
+        title.setLayoutY(15);
+        title.setLayoutX(5);
+        element.getChildren().add(title);
+
+        element.getStyleClass().add("cell");
+        return element;
     }
 }
