@@ -117,18 +117,18 @@
             </GridPane>
          </children>
       </Pane>
-      <Text layoutX="273.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2022 - AUGUST" textAlignment="CENTER">
+      <Text fx:id="calTitle" layoutX="273.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2022 - AUGUST" textAlignment="CENTER">
          <font>
             <Font size="36.0" />
          </font>
       </Text>
       <ListView layoutX="14.0" layoutY="573.0" prefHeight="133.0" prefWidth="762.0" />
-      <Button layoutX="570.0" layoutY="28.0" mnemonicParsing="false" text="&gt;">
+      <Button fx:id="nextBtn" layoutX="570.0" layoutY="28.0" mnemonicParsing="false" onAction="#changeMonthNext" text="&gt;">
          <font>
             <Font name="Arial Black" size="15.0" />
          </font>
       </Button>
-      <Button layoutX="191.0" layoutY="28.0" mnemonicParsing="false" text="&lt;">
+      <Button fx:id="prevBtn" layoutX="191.0" layoutY="28.0" mnemonicParsing="false" onAction="#changeMonthPrev" text="&lt;">
          <font>
             <Font name="Arial Black" size="15.0" />
          </font>

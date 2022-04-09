@@ -3,23 +3,51 @@ package Calendar;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
+import java.time.Month;
+
 public class ApplicationController {
-    private Calendar calendar;
+    @FXML
+    public Button prevBtn;
+
+    @FXML
+    public Button nextBtn;
+
+    private Calendar calendar = new Calendar("hei");
+
+    @FXML
+    private Text calTitle;
 
     @FXML
     private GridPane calendarGrid;
 
     @FXML
     public void initialize() {
-        loadCalendar(31);
+        calendar.setSelectedMonth(0);
+        loadCalendar();
     }
 
     @FXML
-    public void loadCalendar(int days) {
+    public void changeMonthPrev(){
+        calendar.setSelectedMonth(-1);
+        calTitle.setText(calendar.getSelectedYear()+ " - " + Month.of(calendar.getSelectedMonth()));
+        loadCalendar();
+    }
+
+    @FXML
+    public void changeMonthNext(){
+        calendar.setSelectedMonth(1);
+        calTitle.setText(calendar.getSelectedYear()+ " - " + Month.of(calendar.getSelectedMonth()));
+        loadCalendar();
+    }
+
+    @FXML
+    public void loadCalendar() {
+        int days = calendar.getDaysInMonth();
         calendarGrid.setAlignment(Pos.CENTER);
         calendarGrid.getChildren().clear();
         for (int i = 0; i < days; i++) {
