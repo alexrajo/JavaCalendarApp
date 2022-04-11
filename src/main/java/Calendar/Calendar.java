@@ -7,7 +7,7 @@ public class Calendar {
 
     //En kalender skal ha et navn, en samling av kalenderelementer og er enten synlig eller ikke.
     private String name;
-    private Collection<CalendarElement> elements;
+    private List<CalendarElement> elements = new ArrayList<>();
     private boolean visible;
     private HashMap<Integer, Integer> month = new HashMap<>();
     private LocalDate currentDate = LocalDate.now();
@@ -42,10 +42,19 @@ public class Calendar {
         else throw new IllegalArgumentException("You can not add multiple instances of the same CalendarElement");
     }
 
+    public List<CalendarElement> getCalelems(){
+        List<CalendarElement> a = new ArrayList<CalendarElement>(elements);
+        return a;
+    }
+
+    public CalendarElement getCalendarElement(int a){
+        return elements.get(a);
+    }
+
     /* ValidCalendar Element hindrer at duplikater av samme objekt kan legges til
     flere ganger */
     private boolean ValidCalendarElement(CalendarElement calelem){
-        return this.elements.contains(calelem);
+        return !this.elements.contains(calelem);
     }
 
     public String getName() {
@@ -100,7 +109,7 @@ public class Calendar {
         }
         if (a < 1) {
             a = 12;
-            setSelectedYear(this.getCurrentYear()-1);
+            setSelectedYear(this.getSelectedYear()-1);
         }
         this.selectedDate.set(1, a);
         System.out.println(a);

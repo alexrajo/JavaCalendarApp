@@ -1,5 +1,7 @@
 package Calendar;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.Date;
 
 public class Event extends CalendarElement{
@@ -31,6 +33,10 @@ public class Event extends CalendarElement{
         super(date, title);
         this.setStartTime(start);
         this.setEndTime(end);
+    }
+
+    public String toString() {
+        return getTitle()+" "+getStartTime()+" "+getEndTime();
     }
 
     public int getStartTime() {
