@@ -112,7 +112,6 @@ public class Calendar {
             setSelectedYear(this.getSelectedYear()-1);
         }
         this.selectedDate.set(1, a);
-        System.out.println(a);
     }
 
     public int getDaysInMonth(){
