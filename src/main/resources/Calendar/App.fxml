@@ -117,7 +117,7 @@
             </GridPane>
          </children>
       </Pane>
-      <Text fx:id="calTitle" layoutX="273.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2022 - AUGUST" textAlignment="CENTER">
+      <Text fx:id="calendarTitle" layoutX="273.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2022 - AUGUST" textAlignment="CENTER">
          <font>
             <Font size="36.0" />
          </font>

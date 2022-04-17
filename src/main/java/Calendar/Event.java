@@ -1,66 +1,52 @@
 package Calendar;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class Event extends CalendarElement{
 
-    //Defined in seconds after midnight:
-    private int startTime;
-    private int endTime;
-    //--
+    private int duration; //Defined in seconds after midnight:
 
-    public Event(Date date, String title, String description, boolean recurring, int start, int end) {
-        super(date, title, description, recurring);
-        this.setStartTime(start);
-        this.setEndTime(end);
+    public Event(LocalDateTime dateTime, String title, String description, int occurrences, int interval, int duration) {
+        super(dateTime, title, description, occurrences, interval);
+        this.setDuration(duration);
     }
 
-    public Event(Date date, String title, String description, int start, int end) {
-        super(date, title, description);
-        this.setStartTime(start);
-        this.setEndTime(end);
+    public Event(LocalDateTime dateTime, String title, String description, int duration) {
+        super(dateTime, title, description);
+        this.setDuration(duration);
     }
 
-    public Event(Date date, String title, boolean recurring, int start, int end) {
-        super(date, title, recurring);
-        this.setStartTime(start);
-        this.setEndTime(end);
+    public Event(LocalDateTime dateTime, String title, int occurrences, int interval, int duration) {
+        super(dateTime, title, occurrences, interval);
+        this.setDuration(duration);
     }
 
-    public Event(Date date, String title, int start, int end) {
-        super(date, title);
-        this.setStartTime(start);
-        this.setEndTime(end);
+    public Event(LocalDateTime dateTime, String title, int duration) {
+        super(dateTime, title);
+        this.setDuration(duration);
     }
 
     public String toString() {
-        return getTitle()+" "+getStartTime()+" "+getEndTime();
+        return this.getTitle() + ": lasts for " + String.valueOf(this.getDuration()) + " seconds";
     }
 
-    public int getStartTime() {
-        return startTime;
+    public int getDuration() {
+        return this.duration;
     }
 
-    public void setStartTime(int startTime) {
-        this.startTime = startTime;
-    }
-
-    public int getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(int endTime) {
-        this.endTime = endTime;
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
 
     public boolean isWholeDay() {
-        return (this.getEndTime()-this.getStartTime() == 86400);
+        return (this.getDuration() == 86400);
     }
 
     public void setWholeDay() {
-        this.setStartTime(0);
-        this.setEndTime(86400);
+        LocalDateTime currentDateTime = this.getDateTime();
+
+        this.setDateTime(currentDateTime.with(LocalTime.MIDNIGHT));
+        this.setDuration(86400);
     }
 }

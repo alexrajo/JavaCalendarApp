@@ -1,23 +1,35 @@
 package Calendar;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
-public class Todo extends Event {
+public class Todo extends CalendarElement {
 
-    public Todo(Date date, String title, String description, boolean recurring, int start, int end) {
-        super(date, title, description, recurring, start, end);
+    private boolean completed;
+
+    public Todo(LocalDateTime dateTime, String title, String description, boolean completed) {
+        super(dateTime, title, description);
+        this.setCompleted(completed);
     }
 
-    public Todo(Date date, String title, String description, int start, int end) {
-        super(date, title, description, start, end);
+    public Todo(LocalDateTime dateTime, String title, boolean completed) {
+        super(dateTime, title);
+        this.setCompleted(completed);
     }
 
-    public Todo(Date date, String title, boolean recurring, int start, int end) {
-        super(date, title, recurring, start, end);
+    public Todo(LocalDateTime dateTime, String title, String description) {
+        this(dateTime, title, description, false);
     }
 
-    public Todo(Date date, String title, int start, int end) {
-        super(date, title, start, end);
+    public Todo(LocalDateTime dateTime, String title) {
+        this(dateTime, title, false);
+    }
+
+    public boolean isCompleted() {
+        return this.completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
     }
 
 }
