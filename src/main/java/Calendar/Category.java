@@ -9,13 +9,14 @@ public class Category {
     private List<CalendarElement> elements = new ArrayList<>();
     private boolean visible;
     private ApplicationController listener;
-    private File storageFile;
+    private FileManager fileManager;
 
     //Konstruktøren krever et navn, og settes til synlig av default.
     //Elementene vil kunne legges til i et sted etter kalenderen er opprettet.
     public Category(String name, ApplicationController listener) {
         this.name = name;
         this.listener = listener;
+        this.fileManager = new FileManager(name);
     }
 
     /* AddCalenderElement tar inn Cal.Elem og valideres før det legges til i
@@ -55,8 +56,10 @@ public class Category {
     }
 
     public void setVisible(boolean visible) {
-        this.visible = visible;
-
+        if (this.visible != visible) {
+            this.visible = visible;
+            this.listener.visibilityChanged(this, visible);
+        }
     }
 
 }

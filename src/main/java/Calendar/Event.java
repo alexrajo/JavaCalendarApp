@@ -27,8 +27,17 @@ public class Event extends CalendarElement{
         this.setDuration(duration);
     }
 
+    @Override
     public String toString() {
-        return this.getTitle() + ": lasts for " + String.valueOf(this.getDuration()) + " seconds";
+        return String.format("%s,%t,%s,%s,%d,%d,%d",
+                this.getClass(),
+                this.getDateTime(),
+                this.getTitle(),
+                this.getDescription(),
+                this.getOccurrences(),
+                this.getOccurrenceInterval(),
+                this.getDuration()
+                );
     }
 
     public int getDuration() {

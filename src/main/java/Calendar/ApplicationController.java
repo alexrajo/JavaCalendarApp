@@ -3,6 +3,7 @@ package Calendar;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
@@ -24,6 +25,7 @@ public class ApplicationController implements CategoryListener {
     private LocalDate currentDate;
     private LocalDate initialDate;
     private int monthOffset;
+    private AnchorPane currentPage;
 
     @FXML
     public Button prevBtn;
@@ -38,11 +40,15 @@ public class ApplicationController implements CategoryListener {
     private GridPane calendarGrid;
 
     @FXML
+    private AnchorPane mainPage;
+
+    @FXML
     public void initialize() {
         this.currentDate = LocalDate.now();
         this.initialDate = this.currentDate;
         this.monthOffset = 0;
 
+        this.setCurrentPage(mainPage);
         loadCalendar();
 
         //Using a timer with a timertask to update our calendar with an interval specified above
@@ -112,6 +118,15 @@ public class ApplicationController implements CategoryListener {
 
         element.getStyleClass().add("cell");
         return element;
+    }
+
+    public void setCurrentPage(AnchorPane page) {
+        //Need to loop through and disable other pages
+        this.currentPage = page;
+    }
+
+    public AnchorPane getCurrentPage(){
+        return this.currentPage;
     }
 
     @Override
