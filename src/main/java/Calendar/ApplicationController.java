@@ -15,13 +15,12 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class ApplicationController implements CategoryListener {
+public class ApplicationController implements ElementListener {
 
     private int calendarUpdateInterval = 3600; //Seconds
     private TimerTask timerTask;
     private Timer timer;
 
-    private List<Category> categories = Arrays.asList(new Category("Default", this));
     private LocalDate currentDate;
     private LocalDate initialDate;
     private int monthOffset;
@@ -130,22 +129,12 @@ public class ApplicationController implements CategoryListener {
     }
 
     @Override
-    public void visibilityChanged(Category category, boolean visible) {
+    public void elementRemoved(CalendarElement element) {
 
     }
 
     @Override
-    public void elementAdded(Category category, CalendarElement element) {
-
-    }
-
-    @Override
-    public void elementRemoved(Category category, CalendarElement element) {
-
-    }
-
-    @Override
-    public void elementChanged(Category category, CalendarElement element) {
+    public void elementChanged(CalendarElement element) {
 
     }
 }
