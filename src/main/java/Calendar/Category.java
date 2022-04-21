@@ -1,6 +1,8 @@
 package Calendar;
-import java.io.File;
-import java.util.*;
+
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Category {
 
@@ -17,20 +19,21 @@ public class Category {
         this.name = name;
         this.listener = listener;
         this.fileManager = new FileManager(name);
+
+        this.elements = this.fileManager.readFromFile();
     }
 
     /* AddCalenderElement tar inn Cal.Elem og valideres før det legges til i
     CalendarElements */
-    public void AddCalendarElement(CalendarElement calelem){
-        if (ValidCalendarElement(calelem)){
-            this.elements.add(calelem);
+    public void addCalendarElement(CalendarElement calendarElement){
+        if (ValidCalendarElement(calendarElement)){
+            this.elements.add(calendarElement);
         }
         else throw new IllegalArgumentException("You can not add multiple instances of the same CalendarElement");
     }
 
-    public List<CalendarElement> getCalelems(){
-        List<CalendarElement> a = new ArrayList<CalendarElement>(elements);
-        return a;
+    public List<CalendarElement> getcalendarElements(){
+        return this.elements;
     }
 
     public CalendarElement getCalendarElement(int a){
@@ -39,8 +42,8 @@ public class Category {
 
     /* ValidCalendar Element hindrer at duplikater av samme objekt kan legges til
     flere ganger */
-    private boolean ValidCalendarElement(CalendarElement calelem){
-        return !this.elements.contains(calelem);
+    private boolean ValidCalendarElement(CalendarElement calendarElement){
+        return !this.elements.contains(calendarElement);
     }
 
     public String getName() {

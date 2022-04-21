@@ -7,16 +7,6 @@ public class Event extends CalendarElement{
 
     private int duration; //Defined in seconds after midnight:
 
-    public Event(LocalDateTime dateTime, String title, String description, int occurrences, int interval, int duration) {
-        super(dateTime, title, description, occurrences, interval);
-        this.setDuration(duration);
-    }
-
-    public Event(LocalDateTime dateTime, String title, String description, int duration) {
-        super(dateTime, title, description);
-        this.setDuration(duration);
-    }
-
     public Event(LocalDateTime dateTime, String title, int occurrences, int interval, int duration) {
         super(dateTime, title, occurrences, interval);
         this.setDuration(duration);
@@ -29,11 +19,10 @@ public class Event extends CalendarElement{
 
     @Override
     public String toString() {
-        return String.format("%s,%t,%s,%s,%d,%d,%d",
+        return String.format("%s,%s,%s,%d,%d,%d",
                 this.getClass(),
                 this.getDateTime(),
                 this.getTitle(),
-                this.getDescription(),
                 this.getOccurrences(),
                 this.getOccurrenceInterval(),
                 this.getDuration()

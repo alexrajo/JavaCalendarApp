@@ -3,6 +3,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -13,11 +14,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Calendar.ApplicationController">
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Calendar.ApplicationController">
    <children>
-      <AnchorPane fx:id="mainPage" prefHeight="720.0" prefWidth="1080.0">
+      <AnchorPane fx:id="mainPage" prefHeight="720.0" prefWidth="1280.0">
          <children>
-            <Pane prefHeight="485.0" prefWidth="762.0" style="-fx-background-color: #FFFFFF;" stylesheets="@stylesheet.css" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="77.0">
+            <Pane layoutX="231.0" layoutY="83.0" prefHeight="485.0" prefWidth="762.0" style="-fx-background-color: #FFFFFF;" stylesheets="@stylesheet.css" AnchorPane.leftAnchor="231.0" AnchorPane.topAnchor="83.0">
                <children>
                   <GridPane fx:id="calendarWeekDays" gridLinesVisible="true" layoutX="9.0" layoutY="7.0" prefHeight="40.0" prefWidth="745.0">
                     <columnConstraints>
@@ -119,23 +120,23 @@
                   </GridPane>
                </children>
             </Pane>
-            <Text fx:id="calendarTitle" layoutX="271.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2022 - AUGUST" textAlignment="CENTER">
+            <Text fx:id="calendarTitle" layoutX="489.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2022 - AUGUST" textAlignment="CENTER">
                <font>
                   <Font size="36.0" />
                </font>
             </Text>
-            <ListView layoutX="14.0" layoutY="568.0" prefHeight="133.0" prefWidth="762.0" />
-            <Button fx:id="nextBtn" layoutX="540.0" layoutY="24.0" mnemonicParsing="false" onAction="#changeMonthNext" text="&gt;">
+            <ListView layoutX="231.0" layoutY="573.0" prefHeight="133.0" prefWidth="754.0" />
+            <Button fx:id="nextBtn" layoutX="758.0" layoutY="24.0" mnemonicParsing="false" onAction="#changeMonthNext" text="&gt;">
                <font>
                   <Font name="Arial Black" size="15.0" />
                </font>
             </Button>
-            <Button fx:id="prevBtn" layoutX="219.0" layoutY="24.0" mnemonicParsing="false" onAction="#changeMonthPrev" text="&lt;">
+            <Button fx:id="prevBtn" layoutX="437.0" layoutY="24.0" mnemonicParsing="false" onAction="#changeMonthPrev" text="&lt;">
                <font>
                   <Font name="Arial Black" size="15.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0">
+            <Button layoutX="238.0" layoutY="14.0" mnemonicParsing="false" AnchorPane.leftAnchor="238.0" AnchorPane.topAnchor="14.0">
                <graphic>
                   <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -144,18 +145,34 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Pane layoutX="790.0" layoutY="77.0" prefHeight="485.0" prefWidth="276.0" style="-fx-background-color: #FFFFFF;" AnchorPane.leftAnchor="790.0" AnchorPane.rightAnchor="14.0">
+            <Pane layoutX="993.0" layoutY="77.0" prefHeight="494.0" prefWidth="273.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #AAAAAA;" AnchorPane.leftAnchor="993.0" AnchorPane.rightAnchor="14.0">
                <children>
                   <Text fill="#686868" layoutX="79.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="GJØREMÅL" textAlignment="CENTER">
                      <font>
                         <Font size="24.0" />
                      </font>
                   </Text>
-                  <ScrollPane fitToWidth="true" layoutX="7.0" layoutY="57.0" prefHeight="419.0" prefWidth="261.0">
+                  <ScrollPane fitToWidth="true" layoutX="7.0" layoutY="57.0" prefHeight="362.0" prefWidth="261.0">
                      <content>
                         <ListView prefHeight="578.0" prefWidth="246.0" />
                      </content>
                   </ScrollPane>
+               </children>
+            </Pane>
+            <Pane layoutX="14.0" layoutY="83.0" prefHeight="485.0" prefWidth="211.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #AAAAAA;">
+               <children>
+                  <Text fill="#686868" layoutX="38.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="KATEGORIER" textAlignment="CENTER">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <ScrollPane fitToWidth="true" layoutX="7.0" layoutY="57.0" prefHeight="342.0" prefWidth="197.0">
+                     <content>
+                        <ListView prefHeight="346.0" prefWidth="182.0" />
+                     </content>
+                  </ScrollPane>
+                  <Button layoutX="77.0" layoutY="446.0" mnemonicParsing="false" text="LAG NY" />
+                  <TextField layoutX="32.0" layoutY="411.0" promptText="Navn på kategori" />
                </children>
             </Pane>
          </children>

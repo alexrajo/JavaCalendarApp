@@ -10,20 +10,25 @@ import java.util.Scanner;
 
 public class FileManager implements FileInterface {
 
-    private File file;
+    private static final String separator = File.separator;
+    public static String filePath = System.getProperty("user.dir")
+            + separator + "src"
+            + separator + "main"
+            + separator + "resources"
+            + separator + "Calendar"
+            + separator + "storage";
+
+    private final File file;
     private String fileName;
-    private FileWriter writer;
-    private Scanner scanner;
-    public static String filePath = "/resources/Calendar/CalendarStorage/";
 
     public FileManager(String fileName) {
         this.fileName = fileName;
-        this.file = new File(filePath + fileName);
+        this.file = new File(filePath + File.separator + fileName + ".txt");
 
         try {
             boolean createdNewFile = this.file.createNewFile();
             if (createdNewFile) {
-                System.out.println("Created new file: " + fileName);
+                System.out.println("Created new file: " + fileName + " at " + filePath);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -32,16 +37,16 @@ public class FileManager implements FileInterface {
 
     @Override
     public void writeToFile(List<CalendarElement> entries) {
-        String fileContent = "";
+        StringBuilder fileContent = new StringBuilder();
         for(CalendarElement entry: entries) {
-            fileContent += entry.toString() + System.lineSeparator();
+            fileContent.append(entry.toString()).append(System.lineSeparator());
         }
         try {
-            this.writer = new FileWriter(this.file);
+            FileWriter writer = new FileWriter(this.file);
 
-            this.writer.write(fileContent);
-            this.writer.flush();
-            this.writer.close();
+            writer.write(fileContent.toString());
+            writer.flush();
+            writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -52,24 +57,20 @@ public class FileManager implements FileInterface {
         try {
             List<CalendarElement> elements = new ArrayList<CalendarElement>();
 
-            this.scanner = new Scanner(this.file);
-            while (this.scanner.hasNextLine()) {
-                String line = this.scanner.nextLine();
+            Scanner scanner = new Scanner(this.file);
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
                 List<String> info = List.of(line.split("\\|"));
 
                 switch (info.get(0)) {
-                    case "Event":
+                    case "Event" -> {
                         elements.add(new Event(LocalDateTime.now(), "Test", 3600));
-                        break;
+                    }
 
-                    case "Todo":
+                    case "Todo" -> {
                         elements.add(new Todo(LocalDateTime.now(), "Finish file manager"));
-                        break;
-
-                    default:
-                        break;
+                    }
                 }
-
             }
 
             return elements;
@@ -77,5 +78,13 @@ public class FileManager implements FileInterface {
             e.printStackTrace();
         }
         return new ArrayList<CalendarElement>();
+    }
+
+    public String getFileName() {
+        return this.fileName;
+    }
+
+    public void renameFile(String newFileName) {
+        this.fileName = newFileName;
     }
 }
