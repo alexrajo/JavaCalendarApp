@@ -60,7 +60,7 @@ public class FileManager implements FileInterface {
             Scanner scanner = new Scanner(this.file);
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
-                List<String> info = List.of(line.split("\\|"));
+                List<String> info = List.of(line.split(","));
 
                 switch (info.get(0)) {
                     case "Event" -> {

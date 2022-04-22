@@ -3,19 +3,24 @@ package Calendar;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.Month;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class ApplicationController implements ElementListener {
+public class ApplicationController {
 
     private int calendarUpdateInterval = 3600; //Seconds
     private TimerTask timerTask;
@@ -24,13 +29,14 @@ public class ApplicationController implements ElementListener {
     private LocalDate currentDate;
     private LocalDate initialDate;
     private int monthOffset;
-    private AnchorPane currentPage;
+    private Calendar calendar;
+    private List<AnchorPane> overlays;
 
     @FXML
-    public Button prevBtn;
+    private Button prevBtn;
 
     @FXML
-    public Button nextBtn;
+    private Button nextBtn;
 
     @FXML
     private Text calendarTitle;
@@ -42,13 +48,36 @@ public class ApplicationController implements ElementListener {
     private AnchorPane mainPage;
 
     @FXML
+    private AnchorPane createMenu;
+
+    @FXML
+    private TextField eventTitleInput;
+
+    @FXML
+    private DatePicker eventStartDateInput;
+    @FXML
+    private TextField eventStartTimeInputH;
+    @FXML
+    private TextField eventStartTimeInputM;
+
+    @FXML
+    private DatePicker eventEndDateInput;
+    @FXML
+    private TextField eventEndTimeInputH;
+    @FXML
+    private TextField eventEndTimeInputM;
+
+    @FXML
     public void initialize() {
         this.currentDate = LocalDate.now();
         this.initialDate = this.currentDate;
         this.monthOffset = 0;
+        this.calendar = new Calendar(this, "elements");
+        this.overlays = Arrays.asList(createMenu);
 
-        this.setCurrentPage(mainPage);
+        this.hideOverlays();
         loadCalendar();
+        this.mainPage.setVisible(true);
 
         //Using a timer with a timertask to update our calendar with an interval specified above
         this.timerTask = new TimerTask() {
@@ -71,10 +100,6 @@ public class ApplicationController implements ElementListener {
     public void changeMonthNext(){
         this.monthOffset++;
         loadCalendar();
-    }
-
-    private static boolean isLeapYear(int year) {
-        return (year-1752)%4 == 0;
     }
 
     @FXML
@@ -119,22 +144,70 @@ public class ApplicationController implements ElementListener {
         return element;
     }
 
-    public void setCurrentPage(AnchorPane page) {
-        //Need to loop through and disable other pages
-        this.currentPage = page;
+    @FXML
+    public void openCreateMenu() {
+        this.showOverlay(createMenu);
     }
 
-    public AnchorPane getCurrentPage(){
-        return this.currentPage;
+    @FXML
+    public void createNewEventClicked() {
+        String title = eventTitleInput.getText();
+
+        try {
+            LocalDateTime startDateTime = getDateTimeFromInputs(eventStartDateInput, eventStartTimeInputH, eventStartTimeInputM);
+            LocalDateTime endDateTime = getDateTimeFromInputs(eventEndDateInput, eventEndTimeInputH, eventEndTimeInputM);
+
+            int duration = (int) startDateTime.until(endDateTime, ChronoUnit.MINUTES);
+            Event newEvent = new Event(startDateTime, title, duration);
+            calendar.addCalendarElement(newEvent);
+        } catch (IllegalArgumentException e) {
+            //Notify user of error
+            e.printStackTrace();
+        }
+
+        this.hideOverlays();
     }
 
-    @Override
-    public void elementRemoved(CalendarElement element) {
-
+    @FXML
+    public void hideOverlays() {
+        mainPage.setDisable(false);
+        for (AnchorPane p: this.overlays) {
+            try {
+                p.setVisible(false);
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
-    @Override
-    public void elementChanged(CalendarElement element) {
+    private static boolean isLeapYear(int year) {
+        return (year-1752)%4 == 0;
+    }
 
+    private static LocalDateTime getDateTimeFromInputs(DatePicker datePicker, TextField hour, TextField minute) throws IllegalArgumentException {
+        int h = Integer.parseInt(hour.getText());
+        int m = Integer.parseInt(minute.getText());
+
+        if (Double.isNaN(h) || Double.isNaN(m)) {
+            throw new IllegalArgumentException("Minutes and hours should be represented with integers only!");
+        } else if (h < 0 || m < 0 || h > 24 || m > 59 || (h > 23 && m > 0)) {
+            throw new IllegalArgumentException("Invalid time input!");
+        }
+
+        return LocalDateTime.of(datePicker.getValue(), LocalTime.of(h, m));
+    }
+
+    // Kan eventuelt bruke lambda-uttryk for å stykke opp kode mer slik at man unngår repeterende kode
+    private void showOverlay(AnchorPane pane) {
+        if (this.overlays.contains(pane)) {
+            mainPage.setDisable(true);
+        }
+        for (AnchorPane p: this.overlays) {
+            try {
+                p.setVisible(p == pane);
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

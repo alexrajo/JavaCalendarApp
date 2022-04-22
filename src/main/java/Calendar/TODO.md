@@ -1,8 +1,10 @@
 <h1>To do:</h1>
 <ol>
-    <li>Lag FXML side for valg av år og måned (wrap hovesiden i en anchorpane og lag en ny side i enda en anchor pane)</li>
-    <li>Lag kalendernavigasjon - mulighet til å switche mellom ulike måneder og år</li>
+    <li>Få ukedager til å vises riktig, altså alle måneder starter ikke med mandag.</li>
     <li>Få gjøremål til å lastes inn og vises</li>
+    <li>Valider dato- og tids-input mer. Sjekk at start er før slutt.</li>
+    <li>Få fillesing til å fungere.</li>
+    <li>Skriv tester for alle grunnklasser.</li>
 </ol>
 <br>
 <hr>

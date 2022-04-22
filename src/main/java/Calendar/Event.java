@@ -5,7 +5,8 @@ import java.time.LocalTime;
 
 public class Event extends CalendarElement{
 
-    private int duration; //Defined in seconds after midnight:
+    private static final int MINUTES_IN_DAY = 1440;
+    private int duration; //Defined in minutes
 
     public Event(LocalDateTime dateTime, String title, int occurrences, int interval, int duration) {
         super(dateTime, title, occurrences, interval);
@@ -20,7 +21,7 @@ public class Event extends CalendarElement{
     @Override
     public String toString() {
         return String.format("%s,%s,%s,%d,%d,%d",
-                this.getClass(),
+                this.getClass().toString().substring(15),
                 this.getDateTime(),
                 this.getTitle(),
                 this.getOccurrences(),
@@ -38,13 +39,13 @@ public class Event extends CalendarElement{
     }
 
     public boolean isWholeDay() {
-        return (this.getDuration() == 86400);
+        return (this.getDuration() == MINUTES_IN_DAY);
     }
 
     public void setWholeDay() {
         LocalDateTime currentDateTime = this.getDateTime();
 
         this.setDateTime(currentDateTime.with(LocalTime.MIDNIGHT));
-        this.setDuration(86400);
+        this.setDuration(MINUTES_IN_DAY);
     }
 }

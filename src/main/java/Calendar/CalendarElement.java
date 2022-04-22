@@ -14,14 +14,14 @@ public abstract class CalendarElement {
     public CalendarElement(LocalDateTime dateTime, String title, int occurrences, int occurrenceInterval) throws IllegalArgumentException {
         this.setDateTime(dateTime);
         this.setTitle(title);
+        this.setOccurrences(occurrences);
+        this.setOccurrenceInterval(occurrenceInterval);
 
         if (this.occurrences < 1) { throw new IllegalArgumentException("An element must occur at least once!"); }
-        this.setOccurrences(occurrences);
 
         if (this.occurrences > 1 && this.occurrenceInterval < 1) {
             throw new IllegalArgumentException("Interval between occurrences must be a positive number!");
         }
-        this.setOccurrenceInterval(occurrenceInterval);
     }
 
     public CalendarElement(LocalDateTime dateTime, String title) {
