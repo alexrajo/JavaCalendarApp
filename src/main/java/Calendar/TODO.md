@@ -1,9 +1,11 @@
 <h1>To do:</h1>
 <ol>
-    <li>Få gjøremål til å lastes inn og vises</li>
-    <li>Valider dato- og tids-input mer. Sjekk at start er før slutt.</li>
-    <li>Få fillesing til å fungere.</li>
     <li>Skriv tester for alle grunnklasser.</li>
+    <li>Lag side for opprettelse av TODO</li>
+    <li>Mulighet til å velge en dato og få opp en liste med events.</li>
+    <li>ToString i event og todo slik at vi kan vise info ved å bruke denne. Må lage en "toSaveInfo" funksjon for lagringsformål.</li>
+    <li>Lage mulighet til å velge år og måned raskere.</li>
+    <li>EKSTRA: Legge til deadlines</li>
 </ol>
 <br>
 <hr>

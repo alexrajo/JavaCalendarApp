@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Calendar.ApplicationController">
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Calendar.ApplicationController">
    <children>
       <AnchorPane fx:id="createMenu" layoutX="-1.0" layoutY="-1.0" prefHeight="721.0" prefWidth="1281.0" style="-fx-view-order: -1;" visible="false">
          <children>
@@ -175,18 +175,18 @@
                   </GridPane>
                </children>
             </Pane>
-            <Text fx:id="calendarTitle" layoutX="498.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2022 - AUGUS" textAlignment="CENTER">
+            <Text fx:id="calendarTitle" layoutX="455.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-text-origin: center;" textOrigin="CENTER" wrappingWidth="314.6729736328125" AnchorPane.leftAnchor="455.0" AnchorPane.rightAnchor="778.3270263671875" AnchorPane.topAnchor="16.05859375">
                <font>
                   <Font size="36.0" />
                </font>
             </Text>
             <ListView layoutX="231.0" layoutY="573.0" prefHeight="133.0" prefWidth="754.0" />
-            <Button fx:id="nextBtn" layoutX="758.0" layoutY="24.0" mnemonicParsing="false" onAction="#changeMonthNext" text="&gt;">
+            <Button fx:id="nextBtn" layoutX="773.0" layoutY="24.0" mnemonicParsing="false" onAction="#changeMonthNext" text="&gt;">
                <font>
                   <Font name="Arial Black" size="15.0" />
                </font>
             </Button>
-            <Button fx:id="prevBtn" layoutX="437.0" layoutY="24.0" mnemonicParsing="false" onAction="#changeMonthPrev" text="&lt;">
+            <Button fx:id="prevBtn" layoutX="422.0" layoutY="24.0" mnemonicParsing="false" onAction="#changeMonthPrev" text="&lt;">
                <font>
                   <Font name="Arial Black" size="15.0" />
                </font>

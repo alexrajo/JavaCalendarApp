@@ -1,6 +1,7 @@
 package Calendar;
 
-import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -8,6 +9,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -91,11 +93,24 @@ public class ApplicationController {
 
     @FXML
     public void loadTodolist(){
-        for (CalendarElement a: calendar.getCalendarElements()) {
-            if (a.getClass().toString().substring(15).equals("Todo")){
-                CheckBox b = new CheckBox();
-                b.setId(a.getTitle());
-                todoList.getItems().add(new CheckBox(a.getTitle()));
+        this.todoList.getItems().clear();
+
+        for (CalendarElement element: calendar.getCalendarElements()) {
+            if (element.getClass().equals(Todo.class)){
+                Todo todo = (Todo) element;
+
+                CheckBox checkBox = new CheckBox(element.getTitle());
+                checkBox.setId(element.getTitle());
+                checkBox.setSelected(todo.isCompleted());
+
+                checkBox.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        todo.setCompleted(checkBox.isSelected());
+                    }
+                });
+
+                this.todoList.getItems().add(checkBox);
             }
         }
     }
@@ -122,21 +137,24 @@ public class ApplicationController {
         int currentMonthDay = selectedDate.getDayOfMonth();
         String newCalendarTitle = String.format("%s %s", selectedMonth.toString(), String.valueOf(selectedYear));
         calendarTitle.setText(newCalendarTitle);
+        calendarTitle.setTextAlignment(TextAlignment.CENTER);
+
         int startDayAdjustment = LocalDate.of(selectedYear, selectedMonth.getValue(), 1).getDayOfWeek().getValue();
         calendarGrid.setAlignment(Pos.CENTER);
         calendarGrid.getChildren().clear();
+
         for (int i = 0; i < monthDays+startDayAdjustment-1; i++) {
             List<String> tempList = new ArrayList<String>();
             boolean isToday = false;
-            if (i-startDayAdjustment >= 0 && i<monthDays) {
+            if (i-startDayAdjustment >= -1 && i-startDayAdjustment<monthDays) {
                 isToday = LocalDate.of(selectedYear, selectedMonth, i-startDayAdjustment+2).equals(this.currentDate);
                 for (CalendarElement c: calendar.getCalendarElements()) {
                     if (c.getDateTime().toLocalDate().equals(LocalDate.of(selectedYear, selectedMonth.getValue(), i-startDayAdjustment+2))) {
                         tempList.add(c.getTitle());
                     }
                 }
+                calendarGrid.add(createCalendarElement(i+1, isToday, startDayAdjustment, tempList), i%7, i/7);
             }
-            calendarGrid.add(createCalendarElement(i+1, isToday, startDayAdjustment, tempList), i%7, i/7);
         }
     }
 
@@ -176,12 +194,16 @@ public class ApplicationController {
         String title = eventTitleInput.getText();
 
         try {
+            if (title.contains(",")) throw new IllegalArgumentException("Title cannot contain a ','!");
+
             LocalDateTime startDateTime = getDateTimeFromInputs(eventStartDateInput, eventStartTimeInputH, eventStartTimeInputM);
             LocalDateTime endDateTime = getDateTimeFromInputs(eventEndDateInput, eventEndTimeInputH, eventEndTimeInputM);
 
+            if (endDateTime.isBefore(startDateTime)) throw new IllegalArgumentException("Start date must be before end date!");
+
             int duration = (int) startDateTime.until(endDateTime, ChronoUnit.MINUTES);
-            Event newEvent = new Event(startDateTime, title, duration);
-            calendar.addCalendarElement(newEvent);
+            Event newEvent = new Event(startDateTime, title, duration, this.calendar);
+            calendar.createCalendarElement(newEvent);
         } catch (IllegalArgumentException e) {
             //Notify user of error
             e.printStackTrace();
@@ -201,7 +223,6 @@ public class ApplicationController {
             }
         }
     }
-
 
 
     private static LocalDateTime getDateTimeFromInputs(DatePicker datePicker, TextField hour, TextField minute) throws IllegalArgumentException {
@@ -230,4 +251,5 @@ public class ApplicationController {
             }
         }
     }
+
 }

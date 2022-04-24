@@ -1,6 +1,8 @@
 package Calendar;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class CalendarElement {
 
@@ -9,9 +11,12 @@ public abstract class CalendarElement {
     private String title;
     private int occurrences;
     private int occurrenceInterval; //Defined in seconds between each occurrence
+    private List<ElementListener> listeners;
+    private boolean listenable = false;
 
     //Constructors
-    public CalendarElement(LocalDateTime dateTime, String title, int occurrences, int occurrenceInterval) throws IllegalArgumentException {
+    public CalendarElement(LocalDateTime dateTime, String title, int occurrences, int occurrenceInterval, ElementListener... listeners) throws IllegalArgumentException {
+        this.listeners = List.of(listeners);
         this.setDateTime(dateTime);
         this.setTitle(title);
         this.setOccurrences(occurrences);
@@ -24,8 +29,8 @@ public abstract class CalendarElement {
         }
     }
 
-    public CalendarElement(LocalDateTime dateTime, String title) {
-        this(dateTime, title, 1, 0);
+    public CalendarElement(LocalDateTime dateTime, String title, ElementListener... listeners) {
+        this(dateTime, title, 1, 0, listeners);
     }
 
     //Public methods
@@ -35,6 +40,7 @@ public abstract class CalendarElement {
 
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
+        this.changed();
     }
 
     public String getTitle() {
@@ -43,6 +49,7 @@ public abstract class CalendarElement {
 
     public void setTitle(String title) {
         this.title = title;
+        this.changed();
     }
 
     public int getOccurrences() {
@@ -51,6 +58,7 @@ public abstract class CalendarElement {
 
     public void setOccurrences(int occurrences) {
         this.occurrences = occurrences;
+        this.changed();
     }
 
     public int getOccurrenceInterval() {
@@ -59,5 +67,20 @@ public abstract class CalendarElement {
 
     public void setOccurrenceInterval(int occurrenceInterval) {
         this.occurrenceInterval = occurrenceInterval;
+        this.changed();
+    }
+
+    public abstract String toFileInfo();
+
+    protected void setListenable(boolean listenable) {
+        this.listenable = listenable;
+    }
+
+    protected void changed() {
+        if (!this.listenable) { return; }
+
+        for (ElementListener listener : listeners) {
+            listener.elementChanged(this);
+        }
     }
 }

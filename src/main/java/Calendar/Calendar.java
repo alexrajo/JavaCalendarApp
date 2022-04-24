@@ -6,20 +6,21 @@ import java.util.List;
 public class Calendar implements ElementListener {
 
     private List<CalendarElement> elements = new ArrayList<>();
-    private ApplicationController listener;
+    private ApplicationController controller;
     private FileManager fileManager;
 
-    public Calendar(ApplicationController listener, String targetFileName) {
-        this.listener = listener;
-        this.fileManager = new FileManager(targetFileName);
+    public Calendar(ApplicationController controller, String targetFileName) {
+        this.controller = controller;
+        this.fileManager = new FileManager(targetFileName, this);
 
         this.elements = this.fileManager.readFromFile();
     }
 
-    public void addCalendarElement(CalendarElement calendarElement){
+    public void createCalendarElement(CalendarElement calendarElement){
         if (ValidCalendarElement(calendarElement)){
             this.elements.add(calendarElement);
             this.fileManager.writeToFile(this.elements);
+            this.controller.loadCalendar();
         }
         else throw new IllegalArgumentException("You can not add multiple instances of the same CalendarElement");
     }
@@ -54,13 +55,19 @@ public class Calendar implements ElementListener {
 
     @Override
     public void elementRemoved(CalendarElement element) {
-
+        this.elements.remove(element);
+        this.fileManager.writeToFile(this.elements);
     }
 
     @Override
     public void elementChanged(CalendarElement element) {
+        this.controller.loadCalendar();
 
+        if (element.getClass().equals(Todo.class)) {
+            this.controller.loadTodolist();
+        }
+
+        this.fileManager.writeToFile(this.elements);
     }
-
 
 }

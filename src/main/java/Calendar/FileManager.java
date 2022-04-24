@@ -20,9 +20,11 @@ public class FileManager implements FileInterface {
 
     private final File file;
     private String fileName;
+    private Calendar calendar;
 
-    public FileManager(String fileName) {
+    public FileManager(String fileName, Calendar calendar) {
         this.fileName = fileName;
+        this.calendar = calendar;
         this.file = new File(filePath + File.separator + fileName + ".txt");
 
         try {
@@ -39,7 +41,7 @@ public class FileManager implements FileInterface {
     public void writeToFile(List<CalendarElement> entries) {
         StringBuilder fileContent = new StringBuilder();
         for(CalendarElement entry: entries) {
-            fileContent.append(entry.toString()).append(System.lineSeparator());
+            fileContent.append(entry.toFileInfo()).append(System.lineSeparator());
         }
         try {
             FileWriter writer = new FileWriter(this.file);
@@ -62,13 +64,20 @@ public class FileManager implements FileInterface {
                 String line = scanner.nextLine();
                 List<String> info = List.of(line.split(","));
 
+                LocalDateTime dateTime = LocalDateTime.parse(info.get(1));
+                String title = info.get(2);
+
                 switch (info.get(0)) {
                     case "Event" -> {
-                        elements.add(new Event(LocalDateTime.now(), "Test", 3600));
+                        elements.add(new Event(dateTime, title,
+                                Integer.parseInt(info.get(3)),
+                                Integer.parseInt(info.get(4)),
+                                Integer.parseInt(info.get(5)),
+                                this.calendar));
                     }
 
                     case "Todo" -> {
-                        elements.add(new Todo(LocalDateTime.now(), "Finish file manager"));
+                        elements.add(new Todo(dateTime, title, info.get(3).equals("1"), this.calendar));
                     }
                 }
             }
