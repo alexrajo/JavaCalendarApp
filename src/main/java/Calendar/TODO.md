@@ -1,6 +1,5 @@
 <h1>To do:</h1>
 <ol>
-    <li>Få ukedager til å vises riktig, altså alle måneder starter ikke med mandag.</li>
     <li>Få gjøremål til å lastes inn og vises</li>
     <li>Valider dato- og tids-input mer. Sjekk at start er før slutt.</li>
     <li>Få fillesing til å fungere.</li>

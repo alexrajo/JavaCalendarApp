@@ -109,22 +109,25 @@ public class ApplicationController {
         LocalDate selectedDate = this.initialDate.minusMonths(-this.monthOffset);
         int selectedYear = selectedDate.getYear();
         Month selectedMonth = selectedDate.getMonth();
-        int monthDays = selectedMonth.length(isLeapYear(selectedYear));
+        int monthDays = selectedMonth.length(Calendar.isLeapYear(selectedYear));
         int currentMonthDay = selectedDate.getDayOfMonth();
-
         String newCalendarTitle = String.format("%s %s", selectedMonth.toString(), String.valueOf(selectedYear));
         calendarTitle.setText(newCalendarTitle);
-
+        int startDayAdjustment = LocalDate.of(selectedYear, selectedMonth.getValue(), 1).getDayOfWeek().getValue();
         calendarGrid.setAlignment(Pos.CENTER);
         calendarGrid.getChildren().clear();
-        for (int i = 0; i < monthDays; i++) {
-            boolean isToday = LocalDate.of(selectedYear, selectedMonth, i+1).equals(this.currentDate);
-            calendarGrid.add(createCalendarElement(i+1, isToday), i%7, i/7);
+        for (int i = 0; i < monthDays+startDayAdjustment-1; i++) {
+            boolean isToday = false;
+            if (i-startDayAdjustment >= 0 && i<monthDays) {
+                isToday = LocalDate.of(selectedYear, selectedMonth, i-startDayAdjustment+2).equals(this.currentDate);
+            }
+
+            calendarGrid.add(createCalendarElement(i+1, isToday, startDayAdjustment), i%7, i/7);
         }
     }
 
     @FXML
-    public Pane createCalendarElement(int index, boolean isToday) {
+    public Pane createCalendarElement(int index, boolean isToday, int startDayAdjustment) {
         Pane element = new Pane();
         element.setScaleX(1);
         element.setScaleY(1);
@@ -135,7 +138,11 @@ public class ApplicationController {
             element.setStyle("-fx-background-color: #EEEEEE");
         }
 
-        Text title = new Text(String.valueOf(index));
+        String titleVal = index < startDayAdjustment ? "" : String.valueOf(index-startDayAdjustment+1);
+
+        //Text title = new Text(String.valueOf(index));
+        Text title = new Text(titleVal);
+
         title.setLayoutY(15);
         title.setLayoutX(5);
         element.getChildren().add(title);
@@ -180,9 +187,7 @@ public class ApplicationController {
         }
     }
 
-    private static boolean isLeapYear(int year) {
-        return (year-1752)%4 == 0;
-    }
+
 
     private static LocalDateTime getDateTimeFromInputs(DatePicker datePicker, TextField hour, TextField minute) throws IllegalArgumentException {
         int h = Integer.parseInt(hour.getText());
