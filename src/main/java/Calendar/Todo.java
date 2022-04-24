@@ -11,6 +11,12 @@ public class Todo extends CalendarElement {
         this.setCompleted(completed);
     }
 
+    public void toggleCheck(){
+        boolean a = completed;
+        completed = !a;
+        System.out.println(completed);
+    }
+
     public Todo(LocalDateTime dateTime, String title) {
         this(dateTime, title, false);
     }

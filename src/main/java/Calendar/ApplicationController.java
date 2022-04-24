@@ -1,10 +1,9 @@
 package Calendar;
 
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -15,10 +14,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
 import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 public class ApplicationController {
 
@@ -37,6 +33,9 @@ public class ApplicationController {
 
     @FXML
     private Button nextBtn;
+
+    @FXML
+    private ListView todoList;
 
     @FXML
     private Text calendarTitle;
@@ -74,10 +73,10 @@ public class ApplicationController {
         this.monthOffset = 0;
         this.calendar = new Calendar(this, "elements");
         this.overlays = Arrays.asList(createMenu);
-
         this.hideOverlays();
         loadCalendar();
         this.mainPage.setVisible(true);
+        loadTodolist();
 
         //Using a timer with a timertask to update our calendar with an interval specified above
         this.timerTask = new TimerTask() {
@@ -88,6 +87,17 @@ public class ApplicationController {
         };
         this.timer = new Timer();
         this.timer.schedule(this.timerTask, this.calendarUpdateInterval*1000);
+    }
+
+    @FXML
+    public void loadTodolist(){
+        for (CalendarElement a: calendar.getCalendarElements()) {
+            if (a.getClass().toString().substring(15).equals("Todo")){
+                CheckBox b = new CheckBox();
+                b.setId(a.getTitle());
+                todoList.getItems().add(new CheckBox(a.getTitle()));
+            }
+        }
     }
 
     @FXML
@@ -105,7 +115,6 @@ public class ApplicationController {
     @FXML
     public void loadCalendar() {
         this.currentDate = LocalDate.now();
-
         LocalDate selectedDate = this.initialDate.minusMonths(-this.monthOffset);
         int selectedYear = selectedDate.getYear();
         Month selectedMonth = selectedDate.getMonth();
@@ -117,36 +126,42 @@ public class ApplicationController {
         calendarGrid.setAlignment(Pos.CENTER);
         calendarGrid.getChildren().clear();
         for (int i = 0; i < monthDays+startDayAdjustment-1; i++) {
+            List<String> tempList = new ArrayList<String>();
             boolean isToday = false;
             if (i-startDayAdjustment >= 0 && i<monthDays) {
                 isToday = LocalDate.of(selectedYear, selectedMonth, i-startDayAdjustment+2).equals(this.currentDate);
+                for (CalendarElement c: calendar.getCalendarElements()) {
+                    if (c.getDateTime().toLocalDate().equals(LocalDate.of(selectedYear, selectedMonth.getValue(), i-startDayAdjustment+2))) {
+                        tempList.add(c.getTitle());
+                    }
+                }
             }
-
-            calendarGrid.add(createCalendarElement(i+1, isToday, startDayAdjustment), i%7, i/7);
+            calendarGrid.add(createCalendarElement(i+1, isToday, startDayAdjustment, tempList), i%7, i/7);
         }
     }
 
     @FXML
-    public Pane createCalendarElement(int index, boolean isToday, int startDayAdjustment) {
+    public Pane createCalendarElement(int index, boolean isToday, int startDayAdjustment, List<String> tempList) {
         Pane element = new Pane();
         element.setScaleX(1);
         element.setScaleY(1);
-
         if (isToday) {
             element.setStyle("-fx-background-color: #87FFAD");
         } else if (index%2==0) {
             element.setStyle("-fx-background-color: #EEEEEE");
         }
-
         String titleVal = index < startDayAdjustment ? "" : String.valueOf(index-startDayAdjustment+1);
-
         //Text title = new Text(String.valueOf(index));
         Text title = new Text(titleVal);
-
         title.setLayoutY(15);
         title.setLayoutX(5);
         element.getChildren().add(title);
-
+        Text info = new Text(String.valueOf(tempList.size())+" events");
+        info.setLayoutY(40);
+        info.setLayoutX(20);
+        if (tempList.size() > 0) {
+            element.getChildren().add(info);
+        }
         element.getStyleClass().add("cell");
         return element;
     }

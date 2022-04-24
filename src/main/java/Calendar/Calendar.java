@@ -62,8 +62,5 @@ public class Calendar implements ElementListener {
 
     }
 
-    public static void main(String[] args) {
-        System.out.println(getStartingDate(2022, 0, 24));
-    }
 
 }
