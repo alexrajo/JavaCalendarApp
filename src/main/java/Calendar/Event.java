@@ -32,6 +32,13 @@ public class Event extends CalendarElement{
                 );
     }
 
+    @Override
+    public String toString() {
+        return String.format("%s (Duration: %d)",
+                this.getTitle(),
+                this.getDuration());
+    }
+
     public int getDuration() {
         return this.duration;
     }

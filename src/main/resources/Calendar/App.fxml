@@ -15,9 +15,9 @@
 
 <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Calendar.ApplicationController">
    <children>
-      <AnchorPane fx:id="createMenu" layoutX="-1.0" layoutY="-1.0" prefHeight="721.0" prefWidth="1281.0" style="-fx-view-order: -1;" visible="false">
+      <AnchorPane fx:id="overlayContainer" layoutX="-1.0" layoutY="-1.0" prefHeight="721.0" prefWidth="1281.0" style="-fx-view-order: -1;" visible="false">
          <children>
-            <Pane layoutX="452.0" layoutY="81.0" prefHeight="540.0" prefWidth="425.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #AAAAAA; -fx-view-order: -1;">
+            <Pane fx:id="createEventMenu" layoutX="452.0" layoutY="81.0" prefHeight="540.0" prefWidth="425.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #AAAAAA; -fx-view-order: -1;" visible="false">
                <children>
                   <Text layoutX="186.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TITTEL" textAlignment="CENTER">
                      <font>
@@ -68,7 +68,45 @@
                   </Text>
                </children>
             </Pane>
-            <Pane layoutX="44.0" layoutY="34.0" opacity="0.37" prefHeight="605.0" prefWidth="1178.0" style="-fx-background-color: #000000;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <Pane fx:id="overlayBackdrop" layoutX="44.0" layoutY="34.0" opacity="0.37" prefHeight="605.0" prefWidth="1178.0" style="-fx-background-color: #000000;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <Pane fx:id="createTodoMenu" layoutX="452.0" layoutY="91.0" prefHeight="540.0" prefWidth="425.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #AAAAAA; -fx-view-order: -1;">
+               <children>
+                  <Text layoutX="186.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TITTEL" textAlignment="CENTER">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                  </Text>
+                  <TextField fx:id="todoTitleInput" layoutX="99.0" layoutY="143.0" prefHeight="36.0" prefWidth="228.0" />
+                  <Pane prefHeight="67.0" prefWidth="426.0" style="-fx-border-color: #AAAAAA;">
+                     <children>
+                        <Text layoutX="69.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="LAG NYTT GJØREMÅL" textAlignment="CENTER">
+                           <font>
+                              <Font size="30.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </Pane>
+                  <Text layoutX="163.0" layoutY="225.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TIDSPUNKT" textAlignment="CENTER">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                  </Text>
+                  <DatePicker fx:id="todoDateInput" layoutX="54.0" layoutY="245.0" />
+                  <Button layoutX="176.0" layoutY="402.0" mnemonicParsing="false" onAction="#createNewTodoClicked" text="FERDIG">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Button>
+                  <Button layoutX="183.0" layoutY="466.0" mnemonicParsing="false" onAction="#hideOverlays" text="AVBRYT" />
+                  <TextField fx:id="todoTimeInputH" layoutX="263.0" layoutY="246.0" prefHeight="25.0" prefWidth="42.0" />
+                  <TextField fx:id="todoTimeInputM" layoutX="322.0" layoutY="246.0" prefHeight="25.0" prefWidth="42.0" />
+                  <Text layoutX="311.0" layoutY="262.0" strokeType="OUTSIDE" strokeWidth="0.0" text=":">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Text>
+               </children>
+            </Pane>
          </children>
       </AnchorPane>
       <AnchorPane fx:id="mainPage" prefHeight="720.0" prefWidth="1280.0">
@@ -191,7 +229,7 @@
                   <Font name="Arial Black" size="15.0" />
                </font>
             </Button>
-            <Pane layoutX="993.0" layoutY="77.0" prefHeight="494.0" prefWidth="273.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #AAAAAA;" AnchorPane.leftAnchor="993.0" AnchorPane.rightAnchor="14.0">
+            <Pane layoutX="993.0" layoutY="77.0" prefHeight="494.0" prefWidth="279.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #AAAAAA;" AnchorPane.leftAnchor="993.0" AnchorPane.rightAnchor="276.0">
                <children>
                   <Text fill="#686868" layoutX="79.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="GJØREMÅL" textAlignment="CENTER">
                      <font>
@@ -200,9 +238,14 @@
                   </Text>
                   <ScrollPane fitToWidth="true" layoutX="7.0" layoutY="57.0" prefHeight="362.0" prefWidth="261.0">
                      <content>
-                        <ListView fx:id="todoList" prefHeight="578.0" prefWidth="246.0" />
+                        <ListView fx:id="todoList" prefHeight="367.0" prefWidth="246.0" />
                      </content>
                   </ScrollPane>
+                  <Button layoutX="81.0" layoutY="432.0" mnemonicParsing="false" onAction="#openCreateTodoMenu" prefHeight="48.0" prefWidth="118.0" text="OPPRETT NY">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Button>
                </children>
             </Pane>
             <Pane layoutX="14.0" layoutY="83.0" prefHeight="485.0" prefWidth="211.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #AAAAAA;">
@@ -217,7 +260,7 @@
                         <ListView prefHeight="346.0" prefWidth="182.0" />
                      </content>
                   </ScrollPane>
-                  <Button layoutX="46.0" layoutY="423.0" mnemonicParsing="false" onAction="#openCreateMenu" prefHeight="48.0" prefWidth="118.0" text="OPPRETT NY">
+                  <Button layoutX="46.0" layoutY="423.0" mnemonicParsing="false" onAction="#openCreateEventMenu" prefHeight="48.0" prefWidth="118.0" text="OPPRETT NY">
                      <font>
                         <Font size="16.0" />
                      </font>

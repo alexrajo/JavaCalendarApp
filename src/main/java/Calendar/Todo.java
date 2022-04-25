@@ -26,6 +26,13 @@ public class Todo extends CalendarElement {
         );
     }
 
+    @Override
+    public String toString() {
+        return String.format("%s (Completed: %b)",
+                this.getTitle(),
+                this.isCompleted());
+    }
+
     public boolean isCompleted() {
         return this.completed;
     }

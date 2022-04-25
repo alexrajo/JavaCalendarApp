@@ -1,7 +1,5 @@
 package Calendar;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -14,14 +12,14 @@ import javafx.scene.text.TextAlignment;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.Month;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 public class ApplicationController {
+
     private TimeManager timemanager;
     private Calendar calendar;
-    private List<AnchorPane> overlays;
+    private List<Pane> overlays;
 
     @FXML
     private Button prevBtn;
@@ -42,7 +40,12 @@ public class ApplicationController {
     private AnchorPane mainPage;
 
     @FXML
-    private AnchorPane createMenu;
+    private AnchorPane overlayContainer;
+
+    @FXML
+    private Pane createEventMenu;
+    @FXML
+    private Pane createTodoMenu;
 
     @FXML
     private TextField eventTitleInput;
@@ -65,10 +68,11 @@ public class ApplicationController {
     public void initialize() {
         this.timemanager = new TimeManager();
         this.calendar = new Calendar(this, "elements");
-        this.overlays = Arrays.asList(createMenu);
+        this.overlays = Arrays.asList(createEventMenu, createTodoMenu);
         this.hideOverlays();
         loadCalendar();
         loadTodolist();
+        this.overlayContainer.setVisible(false);
         this.mainPage.setVisible(true);
     }
 
@@ -96,7 +100,6 @@ public class ApplicationController {
 
     @FXML
     public void loadCalendar() {
-        System.out.println(timemanager.getSelectedMonth());
         String newCalendarTitle = String.format("%s %s", this.timemanager.monthToString(), String.valueOf(this.timemanager.getSelectedYear()));
         calendarTitle.setText(newCalendarTitle);
         calendarTitle.setTextAlignment(TextAlignment.CENTER);
@@ -127,8 +130,13 @@ public class ApplicationController {
     }
 
     @FXML
-    public void openCreateMenu() {
-        this.showOverlay(createMenu);
+    public void openCreateEventMenu() {
+        this.setOverlay(createEventMenu);
+    }
+
+    @FXML
+    public void openCreateTodoMenu() {
+        this.setOverlay(createTodoMenu);
     }
 
     @FXML
@@ -154,15 +162,14 @@ public class ApplicationController {
     }
 
     @FXML
+    public void createNewTodoClicked() {
+        this.hideOverlays();
+    }
+
+    @FXML
     public void hideOverlays() {
+        this.overlayContainer.setVisible(false);
         mainPage.setDisable(false);
-        for (AnchorPane p: this.overlays) {
-            try {
-                p.setVisible(false);
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
 
@@ -180,11 +187,13 @@ public class ApplicationController {
     }
 
     // Kan eventuelt bruke lambda-uttryk for å stykke opp kode mer slik at man unngår repeterende kode
-    private void showOverlay(AnchorPane pane) {
+    private void setOverlay(Pane pane) {
         if (this.overlays.contains(pane)) {
             mainPage.setDisable(true);
-        }
-        for (AnchorPane p: this.overlays) {
+            this.overlayContainer.setVisible(true);
+        } else return;
+
+        for (Pane p: this.overlays) {
             try {
                 p.setVisible(p == pane);
             } catch (NullPointerException e) {

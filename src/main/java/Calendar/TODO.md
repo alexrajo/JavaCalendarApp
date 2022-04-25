@@ -1,11 +1,11 @@
 <h1>To do:</h1>
 <ol>
     <li>Skriv tester for alle grunnklasser.</li>
-    <li>Lag side for opprettelse av TODO</li>
+    <li>Gjør det mulig å opprette en todo ved å bruke UI siden.</li>
     <li>Mulighet til å velge en dato og få opp en liste med events.</li>
-    <li>ToString i event og todo slik at vi kan vise info ved å bruke denne. Må lage en "toSaveInfo" funksjon for lagringsformål.</li>
     <li>Lage mulighet til å velge år og måned raskere.</li>
     <li>EKSTRA: Legge til deadlines</li>
+    <li>EKSTRA: Legg til checkbox for valg av "heldags" hendelse.</li>
 </ol>
 <br>
 <hr>
