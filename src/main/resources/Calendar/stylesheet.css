@@ -1,9 +1,11 @@
-.calendarGrid {
-
-}
-
 .cell {
     -fx-border-color: black;
     -fx-border-width: 1;
     -fx-border-style: solid centered;
+    -fx-view-order: 0;
+}
+
+.cell .selected {
+    -fx-border-width: 3;
+    -fx-view-order: -1;
 }

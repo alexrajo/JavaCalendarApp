@@ -10,7 +10,7 @@ public abstract class CalendarElement {
     private LocalDateTime dateTime;
     private String title;
     private int occurrences;
-    private int occurrenceInterval; //Defined in seconds between each occurrence
+    private int occurrenceInterval; //Defined in days between each occurrence
     private List<ElementListener> listeners;
     private boolean listenable = false;
 

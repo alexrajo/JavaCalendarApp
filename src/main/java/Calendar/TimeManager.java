@@ -145,4 +145,8 @@ public class TimeManager {
     public void setMonthOffset(int monthOffset) {
         this.monthOffset = monthOffset;
     }
+
+    public LocalDate getDateFromIndexAndOffset(int index) {
+        return LocalDate.now();
+    }
 }
