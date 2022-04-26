@@ -116,7 +116,6 @@ public class ApplicationController implements DateSelectionListener {
 
     @FXML
     public void loadEventList(){
-        System.out.println("maddafakka");
         this.eventList.getItems().clear();
         for (CalendarElement element: this.selectedElements) {
                 this.eventList.getItems().add(ElementCreator.createListItem(element));
