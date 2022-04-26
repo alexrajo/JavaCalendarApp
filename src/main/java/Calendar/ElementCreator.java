@@ -24,4 +24,9 @@ public class ElementCreator {
         return checkBox;
     }
 
+    public static Text createListItem(CalendarElement element){
+        Event todo = (Event) element;
+        return new Text(element.toString());
+    }
+
 }

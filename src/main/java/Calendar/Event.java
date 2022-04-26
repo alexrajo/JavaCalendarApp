@@ -34,9 +34,9 @@ public class Event extends CalendarElement{
 
     @Override
     public String toString() {
-        return String.format("%s (Duration: %d)",
+        return String.format("%s: %s",
                 this.getTitle(),
-                this.getDuration());
+                TimeManager.minutesToFormattedTime(this.getDuration()));
     }
 
     public int getDuration() {

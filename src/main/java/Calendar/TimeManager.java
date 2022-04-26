@@ -98,6 +98,12 @@ public class TimeManager {
         this.setStartDayAdjustment();
     }
 
+    public static String minutesToFormattedTime(int minutes) {
+        int carryMinutes = minutes%60;
+        int hours = minutes/60;
+        return String.valueOf(hours)+"t, "+String.valueOf(carryMinutes)+"min";
+    }
+
     public int getSelectedYear() {
         return selectedYear;
     }

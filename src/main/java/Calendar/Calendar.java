@@ -22,6 +22,7 @@ public class Calendar implements ElementListener {
             this.fileManager.writeToFile(this.elements);
             this.controller.loadCalendar();
             this.controller.loadTodolist();
+            this.controller.loadEventList();
         }
         else throw new IllegalArgumentException("You can not add multiple instances of the same CalendarElement");
     }

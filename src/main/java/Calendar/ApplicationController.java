@@ -1,5 +1,7 @@
 package Calendar;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -22,6 +24,10 @@ public class ApplicationController implements DateSelectionListener {
     private TimeManager timemanager;
     private Calendar calendar;
     private List<Pane> overlays;
+    private List<CalendarElement> selectedElements;
+
+    @FXML
+    private CheckBox wholeDayEventCheckBox;
 
     @FXML
     private Button prevBtn;
@@ -31,6 +37,9 @@ public class ApplicationController implements DateSelectionListener {
 
     @FXML
     private ListView todoList;
+
+    @FXML
+    private ListView eventList;
 
     @FXML
     private Text calendarTitle;
@@ -85,6 +94,14 @@ public class ApplicationController implements DateSelectionListener {
         loadTodolist();
         this.overlayContainer.setVisible(false);
         this.mainPage.setVisible(true);
+        this.selectedElements = new ArrayList<CalendarElement>();
+
+        wholeDayEventCheckBox.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                setEventWholeDay(wholeDayEventCheckBox.isSelected());
+            }
+        });
     }
 
     @FXML
@@ -94,6 +111,15 @@ public class ApplicationController implements DateSelectionListener {
             if (element.getClass().equals(Todo.class)){
                 this.todoList.getItems().add(ElementCreator.createCheckbox(element));
             }
+        }
+    }
+
+    @FXML
+    public void loadEventList(){
+        System.out.println("maddafakka");
+        this.eventList.getItems().clear();
+        for (CalendarElement element: this.selectedElements) {
+                this.eventList.getItems().add(ElementCreator.createListItem(element));
         }
     }
 
@@ -153,12 +179,21 @@ public class ApplicationController implements DateSelectionListener {
             int duration = (int) startDateTime.until(endDateTime, ChronoUnit.MINUTES);
             Event newElement = new Event(startDateTime, title, duration, this.calendar);
             calendar.addCalendarElement(newElement);
+
         } catch (IllegalArgumentException e) {
             //Notify user of error
             e.printStackTrace();
         }
 
         this.hideOverlays();
+    }
+
+    public void setEventWholeDay(boolean wholeDay){
+        eventStartTimeInputH.setDisable(wholeDay);
+        eventStartTimeInputM.setDisable(wholeDay);
+        eventEndDateInput.setDisable(wholeDay);
+        eventEndTimeInputH.setDisable(wholeDay);
+        eventEndTimeInputM.setDisable(wholeDay);
     }
 
     @FXML
@@ -225,13 +260,13 @@ public class ApplicationController implements DateSelectionListener {
                 }
             }
         }
-
         /**
             Filtering out all elements that do not have the desired date,
             returning the elements that are registered at the selected date
          */
-        List<CalendarElement> selectedElements = this.calendar.getCalendarElements().stream().filter(
-                element -> element.getDateTime().toLocalDate().equals(selectedCell.getDate())
-        ).collect(Collectors.toList());
+        this.selectedElements =  this.calendar.getCalendarElements().stream().filter(
+                element -> element.getDateTime().toLocalDate().equals(selectedCell.getDate())).filter(
+                        element -> element.getClass().equals(Event.class)).collect(Collectors.toList());
+        loadEventList();
     }
 }

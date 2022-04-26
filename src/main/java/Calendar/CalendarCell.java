@@ -107,7 +107,7 @@ public class CalendarCell extends Pane {
     }
 
     private Text createNewCellInfo(){
-        Text info = new Text(String.valueOf(this.eventCount)+" events");
+        Text info = new Text(String.valueOf(this.eventCount)+" elementer");
         info.setLayoutY(40);
         info.setLayoutX(20);
         return info;

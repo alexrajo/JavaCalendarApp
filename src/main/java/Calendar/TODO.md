@@ -1,10 +1,8 @@
 <h1>To do:</h1>
 <ol>
     <li>Skriv tester for alle grunnklasser.</li>
-    <li>Mulighet til å velge en dato og få opp en liste med events.</li>
     <li>Lage mulighet til å velge år og måned raskere.</li>
     <li>EKSTRA: Legge til deadlines</li>
-    <li>EKSTRA: Legg til checkbox for valg av "heldags" hendelse.</li>
     <li>EKSTRA: Kall "event" for "activity".</li>
 </ol>
 <br>
