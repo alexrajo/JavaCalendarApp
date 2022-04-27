@@ -25,7 +25,7 @@ public class TimeManager {
         this.selectedDate = this.currentDate;
         this.selectedYear = selectedDate.getYear();
         this.selectedMonth = selectedDate.getMonth().getValue();
-        this.monthDays = selectedDate.getMonth().length(Calendar.isLeapYear(selectedYear));
+        this.monthDays = selectedDate.getMonth().length(isLeapYear(selectedYear));
         this.currentMonthDay = selectedDate.getDayOfMonth();
         this.monthOffset = 0;
         setStartDayAdjustment();
@@ -84,7 +84,7 @@ public class TimeManager {
         this.selectedDate = selectedDate;
         this.selectedYear = selectedDate.getYear();
         this.selectedMonth = selectedDate.getMonth().getValue();
-        this.monthDays = selectedDate.getMonth().length(Calendar.isLeapYear(selectedYear));
+        this.monthDays = selectedDate.getMonth().length(isLeapYear(selectedYear));
         this.currentMonthDay = selectedDate.getDayOfMonth();
         this.setStartDayAdjustment();
     }
@@ -93,6 +93,10 @@ public class TimeManager {
         int carryMinutes = minutes%60;
         int hours = minutes/60;
         return String.valueOf(hours)+"t "+String.valueOf(carryMinutes)+"min";
+    }
+
+    public static boolean isLeapYear(int year) {
+        return (year-1752)%4 == 0;
     }
 
     public int getSelectedYear() {

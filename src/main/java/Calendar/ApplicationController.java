@@ -19,7 +19,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class ApplicationController implements DateSelectionListener {
+public class ApplicationController implements DateSelectionListener, CalendarListener {
 
     private TimeManager timemanager;
     private Calendar calendar;
@@ -270,5 +270,12 @@ public class ApplicationController implements DateSelectionListener {
                 element -> element.getDateTime().toLocalDate().equals(date)).filter(
                         element -> element.getClass().equals(Event.class)).collect(Collectors.toList());
         loadEventList();
+    }
+
+    @Override
+    public void calendarChanged() {
+        loadCalendar();
+        loadEventList();
+        loadTodolist();
     }
 }

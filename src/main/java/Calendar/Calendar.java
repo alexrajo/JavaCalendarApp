@@ -1,23 +1,24 @@
 package Calendar;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Calendar implements ElementListener {
 
-    private List<CalendarElement> elements = new ArrayList<>();
-    private ApplicationController controller;
+    private List<CalendarElement> elements;
+    private List<CalendarListener> listeners;
     private FileManager fileManager;
 
-    public Calendar(ApplicationController controller, String targetFileName) {
-        this.controller = controller;
+    public Calendar(ApplicationController controller, String targetFileName, CalendarListener... listeners) {
+        this.listeners = Arrays.asList(listeners);
         this.fileManager = new FileManager(targetFileName, this);
 
         this.elements = this.fileManager.readFromFile();
     }
 
-    public Calendar(String targetFileName) {
-        this(null, targetFileName);
+    public Calendar(String targetFileName, CalendarListener... listeners) {
+        this(null, targetFileName, listeners);
     }
 
     public boolean addCalendarElement(CalendarElement calendarElement) {
@@ -25,12 +26,7 @@ public class Calendar implements ElementListener {
 
         this.elements.add(calendarElement);
         this.fileManager.writeToFile(this.elements);
-
-        if (this.controller != null) {
-            this.controller.loadCalendar();
-            this.controller.loadTodolist();
-            this.controller.loadEventList();
-        }
+        this.notifyOfCalendarChange();
 
         return true; //Element was added to calendar
     }
@@ -60,20 +56,15 @@ public class Calendar implements ElementListener {
         this.fileManager.writeToFile(this.getCalendarElements());
     }
 
-    public static boolean isLeapYear(int year) {
-        return (year-1752)%4 == 0;
+    private void notifyOfCalendarChange() {
+        for (CalendarListener listener : this.listeners) {
+            listener.calendarChanged();
+        }
     }
 
     @Override
     public void elementChanged(CalendarElement element) {
-
-        if (this.controller != null) {
-            this.controller.loadCalendar();
-            if (element instanceof Todo) {
-                this.controller.loadTodolist();
-            }
-        }
-
+        this.notifyOfCalendarChange();
         this.updateFile();
     }
 
