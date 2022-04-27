@@ -16,7 +16,7 @@ public class Calendar implements ElementListener {
         this.elements = this.fileManager.readFromFile();
     }
 
-    public void addCalendarElement(CalendarElement calendarElement){
+    public void addCalendarElement(CalendarElement calendarElement) throws IllegalArgumentException {
         if (ValidCalendarElement(calendarElement)){
             this.elements.add(calendarElement);
             this.fileManager.writeToFile(this.elements);

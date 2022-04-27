@@ -5,7 +5,7 @@ import java.time.LocalTime;
 
 public class Event extends CalendarElement{
 
-    private static final int MINUTES_IN_DAY = 1440;
+    public static final int MINUTES_IN_DAY = 1440;
     private int duration; //Defined in minutes
 
     public Event(LocalDateTime dateTime, String title, int occurrences, int interval, int duration, ElementListener... listeners) {
