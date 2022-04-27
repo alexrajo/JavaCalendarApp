@@ -7,9 +7,9 @@ import javafx.scene.text.Text;
 
 public class ElementCreator {
 
-    public static CheckBox createTodoCheckbox(CalendarElement element){
+    public static TodoListItem createTodoListItem(CalendarElement element){
         Todo todo = (Todo) element;
-        CheckBox checkBox = new CheckBox(element.toString());
+        TodoListItem checkBox = new TodoListItem(element.toString(), todo);
         checkBox.setId(element.getTitle());
         checkBox.setSelected(todo.isCompleted());
         checkBox.setOnAction(new EventHandler<ActionEvent>() {

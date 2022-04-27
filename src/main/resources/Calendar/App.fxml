@@ -245,10 +245,22 @@
                         <ListView fx:id="todoList" prefHeight="367.0" prefWidth="246.0" />
                      </content>
                   </ScrollPane>
-                  <Button defaultButton="true" layoutX="81.0" layoutY="432.0" mnemonicParsing="false" onAction="#openCreateTodoMenu" prefHeight="48.0" prefWidth="118.0" text="OPPRETT NY">
+                  <Button defaultButton="true" layoutX="39.0" layoutY="432.0" mnemonicParsing="false" onAction="#openCreateTodoMenu" prefHeight="48.0" prefWidth="118.0" text="OPPRETT NY">
                      <font>
                         <Font size="16.0" />
                      </font>
+                  </Button>
+                  <Button layoutX="172.0" layoutY="432.0" mnemonicParsing="false" onAction="#deleteSelectedTodoClicked" prefHeight="48.0" prefWidth="65.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@trashcan.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
                   </Button>
                </children>
             </Pane>

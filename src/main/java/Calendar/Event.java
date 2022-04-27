@@ -3,6 +3,7 @@ package Calendar;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 
 public class Event extends CalendarElement{
 
@@ -23,6 +24,22 @@ public class Event extends CalendarElement{
         if (this.occurrences > 1 && this.occurrenceInterval < 1) {
             throw new IllegalArgumentException("Interval between occurrences must be a positive number!");
         }
+    }
+
+    public Event(LocalDateTime startDateTime, LocalDateTime endDateTime, String title, int occurrences, int interval, ElementListener... listeners) {
+        this(startDateTime, title, occurrences, interval, 0, listeners);
+        this.setListenable(false);
+        if (endDateTime.isBefore(startDateTime)) {
+            throw new IllegalArgumentException("Start date must be before end date!");
+        }
+
+        int duration = (int) startDateTime.until(endDateTime, ChronoUnit.MINUTES);
+        this.setDuration(duration);
+        this.setListenable(true);
+    }
+
+    public Event(LocalDateTime startDateTime, LocalDateTime endDateTime, String title, ElementListener... listeners) {
+        this(startDateTime, endDateTime, title, 1, 0, listeners);
     }
 
     public Event(LocalDateTime dateTime, String title, int duration, ElementListener... listeners) {

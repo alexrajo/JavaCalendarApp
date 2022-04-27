@@ -33,6 +33,8 @@ public abstract class CalendarElement {
     }
 
     public void setTitle(String title) {
+        if (title.contains(",")) throw new IllegalArgumentException("Title cannot contain a ','!");
+
         this.title = title;
         this.changed();
     }

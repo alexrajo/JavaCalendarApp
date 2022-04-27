@@ -2,17 +2,18 @@ package Calendar;
 
 import javafx.scene.text.Text;
 
-public class EventListItem extends Text {
+public class EventListItem extends Text implements ListItem {
 
-    private Event event;
+    private Event element;
 
-    public EventListItem(String content, Event event) {
+    public EventListItem(String content, Event element) {
         super(content);
-        this.event = event;
+        this.element = element;
     }
 
-    public Event getEvent() {
-        return event;
+    @Override
+    public Event getElement() {
+        return element;
     }
 
 }

@@ -1,8 +1,10 @@
 package Calendar;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Calendar implements ElementListener {
 
@@ -10,15 +12,11 @@ public class Calendar implements ElementListener {
     private List<CalendarListener> listeners;
     private FileManager fileManager;
 
-    public Calendar(ApplicationController controller, String targetFileName, CalendarListener... listeners) {
+    public Calendar(String targetFileName, CalendarListener... listeners) {
         this.listeners = Arrays.asList(listeners);
         this.fileManager = new FileManager(targetFileName, this);
 
         this.elements = this.fileManager.readFromFile();
-    }
-
-    public Calendar(String targetFileName, CalendarListener... listeners) {
-        this(null, targetFileName, listeners);
     }
 
     public boolean addCalendarElement(CalendarElement calendarElement) {
@@ -35,6 +33,7 @@ public class Calendar implements ElementListener {
         boolean wasRemoved = this.elements.remove(calendarElement);
         if (wasRemoved) {
             this.updateFile();
+            this.notifyOfCalendarChange();
         }
         return wasRemoved;
     }
@@ -50,6 +49,18 @@ public class Calendar implements ElementListener {
 
     public CalendarElement getCalendarElement(int a){
         return this.elements.get(a);
+    }
+
+    public List<CalendarElement> getEventsOnDate(LocalDate date) {
+
+        /**
+         Filtering out all elements that do not have the desired date,
+         returning the elements that are registered at the selected date
+         */
+
+        return this.getCalendarElements().stream().filter(
+                element -> element.getDateTime().toLocalDate().equals(date)).filter(
+                element -> element.getClass().equals(Event.class)).collect(Collectors.toList());
     }
 
     private void updateFile() {

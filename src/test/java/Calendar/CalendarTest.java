@@ -16,7 +16,6 @@ public class CalendarTest {
             LocalDateTime.of(2023, 9, 5, 9, 45)
     );
 
-
     private Calendar calendar;
 
     @BeforeEach

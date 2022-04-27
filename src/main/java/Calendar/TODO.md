@@ -3,7 +3,6 @@
     <li>Skriv tester for alle grunnklasser.</li>
     <li>Lage mulighet til å velge år og måned raskere.</li>
     <li>Gjør det mulig å oppdatere events og todo.</li>
-    <li>Delegere flere oppgaver til modell enn kontrollør.</li>
     <li>EKSTRA: Legge til deadlines</li>
     <li>EKSTRA: Kall "event" for "activity".</li>
 </ol>

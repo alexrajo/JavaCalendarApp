@@ -15,9 +15,7 @@ import javafx.scene.text.TextAlignment;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class ApplicationController implements DateSelectionListener, CalendarListener {
 
@@ -65,7 +63,7 @@ public class ApplicationController implements DateSelectionListener, CalendarLis
     @FXML
     public void initialize() {
         this.timemanager = new TimeManager();
-        this.calendar = new Calendar(this, "elements");
+        this.calendar = new Calendar("elements", this);
         this.overlays = Arrays.asList(createEventMenu, createTodoMenu);
         this.hideOverlays();
         loadCalendar();
@@ -86,8 +84,8 @@ public class ApplicationController implements DateSelectionListener, CalendarLis
     public void loadTodolist(){
         this.todoList.getItems().clear();
         for (CalendarElement element: calendar.getCalendarElements()) {
-            if (element.getClass().equals(Todo.class)){
-                this.todoList.getItems().add(ElementCreator.createTodoCheckbox(element));
+            if (element instanceof Todo){
+                this.todoList.getItems().add(ElementCreator.createTodoListItem(element));
             }
         }
     }
@@ -96,7 +94,9 @@ public class ApplicationController implements DateSelectionListener, CalendarLis
     public void loadEventList(){
         this.eventList.getItems().clear();
         for (CalendarElement element: this.selectedElements) {
+            if (element instanceof Event) {
                 this.eventList.getItems().add(ElementCreator.createEventListItem(element));
+            }
         }
     }
 
@@ -146,8 +146,6 @@ public class ApplicationController implements DateSelectionListener, CalendarLis
     public void createNewEventClicked() {
         String title = eventTitleInput.getText();
         try {
-            if (title.contains(",")) throw new IllegalArgumentException("Title cannot contain a ','!");
-
             Event newElement;
 
             if (wholeDayEventCheckBox.isSelected()) {
@@ -156,11 +154,7 @@ public class ApplicationController implements DateSelectionListener, CalendarLis
                 LocalDateTime startDateTime = getDateTimeFromInputs(eventStartDateInput, eventStartTimeInputH, eventStartTimeInputM);
                 LocalDateTime endDateTime = getDateTimeFromInputs(eventEndDateInput, eventEndTimeInputH, eventEndTimeInputM);
 
-                if (endDateTime.isBefore(startDateTime))
-                    throw new IllegalArgumentException("Start date must be before end date!");
-
-                int duration = (int) startDateTime.until(endDateTime, ChronoUnit.MINUTES);
-                newElement = new Event(startDateTime, title, duration, this.calendar);
+                newElement = new Event(startDateTime, endDateTime, title, this.calendar);
             }
             calendar.addCalendarElement(newElement);
 
@@ -171,15 +165,23 @@ public class ApplicationController implements DateSelectionListener, CalendarLis
         this.hideOverlays();
     }
 
+    public void deleteListItem(ListItem item) {
+        if (item != null) {
+            this.selectedElements.remove(item.getElement());
+            calendar.removeCalendarElement(item.getElement());
+        }
+    }
+
     @FXML
     public void deleteSelectedEventClicked() {
-        EventListItem selected = (EventListItem) eventList.getSelectionModel().getSelectedItem();
-        if (selected != null) {
-            this.selectedElements.remove(selected.getEvent());
-            calendar.removeCalendarElement(selected.getEvent());
-            loadCalendar();
-            loadEventList(); //Move load calls to method called by Calendar after removal
-        }
+        ListItem selected = (ListItem) eventList.getSelectionModel().getSelectedItem();
+        deleteListItem(selected);
+    }
+
+    @FXML
+    public void deleteSelectedTodoClicked() {
+        ListItem selected = (ListItem) todoList.getSelectionModel().getSelectedItem();
+        deleteListItem(selected);
     }
 
     public void setEventWholeDay(boolean wholeDay){
@@ -194,14 +196,11 @@ public class ApplicationController implements DateSelectionListener, CalendarLis
     public void createNewTodoClicked() {
         String title = todoTitleInput.getText();
         try {
-            if (title.contains(",")) throw new IllegalArgumentException("Title cannot contain a ','!");
-
             LocalDateTime dateTime = getDateTimeFromInputs(todoDateInput, todoTimeInputH, todoTimeInputM);
             Todo newElement = new Todo(dateTime, title, this.calendar);
 
             calendar.addCalendarElement(newElement);
         } catch (IllegalArgumentException e) {
-            //Notify user of error
             e.printStackTrace();
         }
 
@@ -213,7 +212,6 @@ public class ApplicationController implements DateSelectionListener, CalendarLis
         this.overlayContainer.setVisible(false);
         mainPage.setDisable(false);
     }
-
 
     private static LocalDateTime getDateTimeFromInputs(DatePicker datePicker, TextField hour, TextField minute) throws IllegalArgumentException {
         int h = Integer.parseInt(hour.getText());
@@ -262,13 +260,7 @@ public class ApplicationController implements DateSelectionListener, CalendarLis
                 date.getYear()
         ));
 
-        /**
-            Filtering out all elements that do not have the desired date,
-            returning the elements that are registered at the selected date
-         */
-        this.selectedElements =  this.calendar.getCalendarElements().stream().filter(
-                element -> element.getDateTime().toLocalDate().equals(date)).filter(
-                        element -> element.getClass().equals(Event.class)).collect(Collectors.toList());
+        this.selectedElements = this.calendar.getEventsOnDate(date);
         loadEventList();
     }
 
