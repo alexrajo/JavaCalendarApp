@@ -12,7 +12,7 @@ public class ElementCreator {
 
     public static CheckBox createCheckbox(CalendarElement element){
         Todo todo = (Todo) element;
-        CheckBox checkBox = new CheckBox(element.getTitle());
+        CheckBox checkBox = new CheckBox(element.toString());
         checkBox.setId(element.getTitle());
         checkBox.setSelected(todo.isCompleted());
         checkBox.setOnAction(new EventHandler<ActionEvent>() {

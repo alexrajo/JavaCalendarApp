@@ -6,6 +6,8 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -14,9 +16,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Calendar.ApplicationController">
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Calendar.ApplicationController">
    <children>
-      <AnchorPane fx:id="overlayContainer" layoutX="-1.0" layoutY="-1.0" prefHeight="721.0" prefWidth="1281.0" style="-fx-view-order: -1;">
+      <AnchorPane fx:id="overlayContainer" layoutX="-1.0" layoutY="-1.0" prefHeight="721.0" prefWidth="1281.0" style="-fx-view-order: -1;" visible="false">
          <children>
             <Pane fx:id="createEventMenu" layoutX="452.0" layoutY="81.0" prefHeight="540.0" prefWidth="425.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #AAAAAA; -fx-view-order: -1;">
                <children>
@@ -41,7 +43,7 @@
                      </font>
                   </Text>
                   <DatePicker fx:id="eventStartDateInput" layoutX="54.0" layoutY="245.0" />
-                  <Button layoutX="176.0" layoutY="402.0" mnemonicParsing="false" onAction="#createNewEventClicked" text="FERDIG">
+                  <Button defaultButton="true" layoutX="176.0" layoutY="402.0" mnemonicParsing="false" onAction="#createNewEventClicked" text="FERDIG">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -94,7 +96,7 @@
                      </font>
                   </Text>
                   <DatePicker fx:id="todoDateInput" layoutX="54.0" layoutY="245.0" />
-                  <Button layoutX="176.0" layoutY="402.0" mnemonicParsing="false" onAction="#createNewTodoClicked" text="FERDIG">
+                  <Button defaultButton="true" layoutX="176.0" layoutY="402.0" mnemonicParsing="false" onAction="#createNewTodoClicked" text="FERDIG">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -243,7 +245,7 @@
                         <ListView fx:id="todoList" prefHeight="367.0" prefWidth="246.0" />
                      </content>
                   </ScrollPane>
-                  <Button layoutX="81.0" layoutY="432.0" mnemonicParsing="false" onAction="#openCreateTodoMenu" prefHeight="48.0" prefWidth="118.0" text="OPPRETT NY">
+                  <Button defaultButton="true" layoutX="81.0" layoutY="432.0" mnemonicParsing="false" onAction="#openCreateTodoMenu" prefHeight="48.0" prefWidth="118.0" text="OPPRETT NY">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -262,16 +264,28 @@
                         <ListView fx:id="eventList" prefHeight="346.0" prefWidth="182.0" />
                      </content>
                   </ScrollPane>
-                  <Button layoutX="46.0" layoutY="423.0" mnemonicParsing="false" onAction="#openCreateEventMenu" prefHeight="48.0" prefWidth="118.0" text="OPPRETT NY">
+                  <Button defaultButton="true" layoutX="7.0" layoutY="424.0" mnemonicParsing="false" onAction="#openCreateEventMenu" prefHeight="48.0" prefWidth="118.0" text="OPPRETT NY">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Button>
-                  <Text fill="#686868" layoutX="68.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" text="21. APRIL" textAlignment="CENTER">
+                  <Text fx:id="eventPickedDateLabel" fill="#686868" layoutX="7.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="196.99999999999994">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Text>
+                  <Button disable="true" layoutX="138.0" layoutY="424.0" mnemonicParsing="false" onAction="#deleteSelectedEventClicked" prefHeight="48.0" prefWidth="65.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@trashcan.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
                </children>
             </Pane>
          </children>

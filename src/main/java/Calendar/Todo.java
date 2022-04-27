@@ -28,9 +28,9 @@ public class Todo extends CalendarElement {
 
     @Override
     public String toString() {
-        return String.format("%s (Completed: %b)",
+        return String.format("%s (%s)",
                 this.getTitle(),
-                this.isCompleted());
+                this.getDateTime().toString().replace('T', ' '));
     }
 
     public boolean isCompleted() {

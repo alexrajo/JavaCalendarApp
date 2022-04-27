@@ -30,59 +30,37 @@ public class ApplicationController implements DateSelectionListener {
     private CheckBox wholeDayEventCheckBox;
 
     @FXML
-    private Button prevBtn;
+    private Button prevBtn, nextBtn;
 
     @FXML
-    private Button nextBtn;
+    private ListView todoList, eventList;
 
     @FXML
-    private ListView todoList;
-
-    @FXML
-    private ListView eventList;
-
-    @FXML
-    private Text calendarTitle;
+    private Text calendarTitle, eventPickedDateLabel;
 
     @FXML
     private GridPane calendarGrid;
 
     @FXML
-    private AnchorPane mainPage;
+    private AnchorPane mainPage, overlayContainer;
 
     @FXML
-    private AnchorPane overlayContainer;
-
-    @FXML
-    private Pane createEventMenu;
-    @FXML
-    private Pane createTodoMenu;
+    private Pane createEventMenu, createTodoMenu;
 
     @FXML
     private TextField eventTitleInput;
 
     @FXML
-    private DatePicker eventStartDateInput;
+    private DatePicker eventStartDateInput, eventEndDateInput;
     @FXML
-    private TextField eventStartTimeInputH;
+    private TextField eventStartTimeInputH, eventStartTimeInputM;
     @FXML
-    private TextField eventStartTimeInputM;
+    private TextField eventEndTimeInputH, eventEndTimeInputM;
 
     @FXML
-    private DatePicker eventEndDateInput;
-    @FXML
-    private TextField eventEndTimeInputH;
-    @FXML
-    private TextField eventEndTimeInputM;
-
-    @FXML
-    private TextField todoTitleInput;
+    private TextField todoTitleInput, todoTimeInputH, todoTimeInputM;
     @FXML
     private DatePicker todoDateInput;
-    @FXML
-    private TextField todoTimeInputH;
-    @FXML
-    private TextField todoTimeInputM;
 
     @FXML
     public void initialize() {
@@ -147,7 +125,7 @@ public class ApplicationController implements DateSelectionListener {
             if (i+1 >= timemanager.getStartDayAdjustment() && i-timemanager.getStartDayAdjustment()<timemanager.getMonthDays()) {
                 LocalDate cellDate = LocalDate.of(timemanager.getSelectedYear(), timemanager.getSelectedMonth(), i- timemanager.getStartDayAdjustment()+2);
                 for (CalendarElement c: calendar.getCalendarElements()) {
-                    if (c.getDateTime().toLocalDate().equals(cellDate)) eventCount++;
+                    if (c instanceof Event && c.getDateTime().toLocalDate().equals(cellDate)) eventCount++;
                 }
                 calendarGrid.add(new CalendarCell(cellDate, eventCount, this), i%7, i/7);
             }
@@ -170,13 +148,20 @@ public class ApplicationController implements DateSelectionListener {
         try {
             if (title.contains(",")) throw new IllegalArgumentException("Title cannot contain a ','!");
 
-            LocalDateTime startDateTime = getDateTimeFromInputs(eventStartDateInput, eventStartTimeInputH, eventStartTimeInputM);
-            LocalDateTime endDateTime = getDateTimeFromInputs(eventEndDateInput, eventEndTimeInputH, eventEndTimeInputM);
+            Event newElement;
 
-            if (endDateTime.isBefore(startDateTime)) throw new IllegalArgumentException("Start date must be before end date!");
+            if (wholeDayEventCheckBox.isSelected()) {
+                newElement = new Event(eventStartDateInput.getValue(), title, this.calendar);
+            } else {
+                LocalDateTime startDateTime = getDateTimeFromInputs(eventStartDateInput, eventStartTimeInputH, eventStartTimeInputM);
+                LocalDateTime endDateTime = getDateTimeFromInputs(eventEndDateInput, eventEndTimeInputH, eventEndTimeInputM);
 
-            int duration = (int) startDateTime.until(endDateTime, ChronoUnit.MINUTES);
-            Event newElement = new Event(startDateTime, title, duration, this.calendar);
+                if (endDateTime.isBefore(startDateTime))
+                    throw new IllegalArgumentException("Start date must be before end date!");
+
+                int duration = (int) startDateTime.until(endDateTime, ChronoUnit.MINUTES);
+                newElement = new Event(startDateTime, title, duration, this.calendar);
+            }
             calendar.addCalendarElement(newElement);
 
         } catch (IllegalArgumentException e) {
@@ -185,6 +170,12 @@ public class ApplicationController implements DateSelectionListener {
         }
 
         this.hideOverlays();
+    }
+
+    @FXML
+    public void deleteSelectedEventClicked() {
+        //Get selected event
+        //Call remove element on calendar
     }
 
     public void setEventWholeDay(boolean wholeDay){
@@ -233,7 +224,7 @@ public class ApplicationController implements DateSelectionListener {
         return LocalDateTime.of(datePicker.getValue(), LocalTime.of(h, m));
     }
 
-    // Kan eventuelt bruke lambda-uttryk for å stykke opp kode mer slik at man unngår repeterende kode
+    // Kan eventuelt bruke funksjonelle grensesnitt for å stykke opp kode mer slik at man unngår repeterende kode
     private void setOverlay(Pane pane) {
         if (this.overlays.contains(pane)) {
             mainPage.setDisable(true);
@@ -259,12 +250,20 @@ public class ApplicationController implements DateSelectionListener {
                 }
             }
         }
+
+        LocalDate date = selectedCell.getDate();
+        eventPickedDateLabel.setText(String.format("%d. %s %d",
+                date.getDayOfMonth(),
+                TimeManager.monthString.get(date.getMonthValue()-1),
+                date.getYear()
+        ));
+
         /**
             Filtering out all elements that do not have the desired date,
             returning the elements that are registered at the selected date
          */
         this.selectedElements =  this.calendar.getCalendarElements().stream().filter(
-                element -> element.getDateTime().toLocalDate().equals(selectedCell.getDate())).filter(
+                element -> element.getDateTime().toLocalDate().equals(date)).filter(
                         element -> element.getClass().equals(Event.class)).collect(Collectors.toList());
         loadEventList();
     }

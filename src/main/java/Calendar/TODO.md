@@ -2,6 +2,7 @@
 <ol>
     <li>Skriv tester for alle grunnklasser.</li>
     <li>Lage mulighet til å velge år og måned raskere.</li>
+    <li>Lage mulighet til å slette elementer fra kalender.</li>
     <li>EKSTRA: Legge til deadlines</li>
     <li>EKSTRA: Kall "event" for "activity".</li>
 </ol>

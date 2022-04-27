@@ -5,6 +5,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 
 public class EventTest {
 
@@ -12,7 +14,7 @@ public class EventTest {
 
     @BeforeEach
     public void initialize() {
-        this.event = new Event(LocalDateTime.of(2022, 4, 27, 10, 30), "TestEvent", 60);
+        this.event = new Event(CalendarTest.testDateTimes.get(0), "TestEvent", 60);
     }
 
     @Test

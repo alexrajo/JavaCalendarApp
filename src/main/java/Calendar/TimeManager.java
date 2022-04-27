@@ -1,7 +1,9 @@
 package Calendar;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 public class TimeManager {
 
@@ -14,7 +16,8 @@ public class TimeManager {
     private int startDayAdjustment;
     private int selectedMonth;
     private int monthOffset;
-    private HashMap<Integer, String> monthString = new HashMap<>();
+    public static final List<String> monthString = Arrays.asList("Januar", "Februar", "Mars", "April", "Mai",
+            "Juni", "Juli", "August", "September", "Oktober", "November", "Desember");
 
     public TimeManager(){
         this.currentDate = LocalDate.now();
@@ -26,23 +29,11 @@ public class TimeManager {
         this.currentMonthDay = selectedDate.getDayOfMonth();
         this.monthOffset = 0;
         setStartDayAdjustment();
-        monthString.put(1, "Januar");
-        monthString.put(2, "Februar");
-        monthString.put(3, "Mars");
-        monthString.put(4, "April");
-        monthString.put(5, "Mai");
-        monthString.put(6, "Juni");
-        monthString.put(7, "Juli");
-        monthString.put(8, "August");
-        monthString.put(9, "September");
-        monthString.put(10, "Oktober");
-        monthString.put(11, "November");
-        monthString.put(12, "Desember");
 
     }
 
     public String monthToString() {
-       return monthString.get(selectedMonth);
+       return monthString.get(selectedMonth-1);
     }
 
     public void setStartDayAdjustment(){
@@ -101,7 +92,7 @@ public class TimeManager {
     public static String minutesToFormattedTime(int minutes) {
         int carryMinutes = minutes%60;
         int hours = minutes/60;
-        return String.valueOf(hours)+"t, "+String.valueOf(carryMinutes)+"min";
+        return String.valueOf(hours)+"t "+String.valueOf(carryMinutes)+"min";
     }
 
     public int getSelectedYear() {
