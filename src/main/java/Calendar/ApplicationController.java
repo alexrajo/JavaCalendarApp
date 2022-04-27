@@ -87,7 +87,7 @@ public class ApplicationController implements DateSelectionListener {
         this.todoList.getItems().clear();
         for (CalendarElement element: calendar.getCalendarElements()) {
             if (element.getClass().equals(Todo.class)){
-                this.todoList.getItems().add(ElementCreator.createCheckbox(element));
+                this.todoList.getItems().add(ElementCreator.createTodoCheckbox(element));
             }
         }
     }
@@ -96,7 +96,7 @@ public class ApplicationController implements DateSelectionListener {
     public void loadEventList(){
         this.eventList.getItems().clear();
         for (CalendarElement element: this.selectedElements) {
-                this.eventList.getItems().add(ElementCreator.createListItem(element));
+                this.eventList.getItems().add(ElementCreator.createEventListItem(element));
         }
     }
 
@@ -165,7 +165,6 @@ public class ApplicationController implements DateSelectionListener {
             calendar.addCalendarElement(newElement);
 
         } catch (IllegalArgumentException e) {
-            //Notify user of error
             e.printStackTrace();
         }
 
@@ -174,8 +173,13 @@ public class ApplicationController implements DateSelectionListener {
 
     @FXML
     public void deleteSelectedEventClicked() {
-        //Get selected event
-        //Call remove element on calendar
+        EventListItem selected = (EventListItem) eventList.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            this.selectedElements.remove(selected.getEvent());
+            calendar.removeCalendarElement(selected.getEvent());
+            loadCalendar();
+            loadEventList(); //Move load calls to method called by Calendar after removal
+        }
     }
 
     public void setEventWholeDay(boolean wholeDay){

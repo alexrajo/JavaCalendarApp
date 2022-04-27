@@ -274,7 +274,7 @@
                         <Font size="18.0" />
                      </font>
                   </Text>
-                  <Button disable="true" layoutX="138.0" layoutY="424.0" mnemonicParsing="false" onAction="#deleteSelectedEventClicked" prefHeight="48.0" prefWidth="65.0">
+                  <Button layoutX="138.0" layoutY="424.0" mnemonicParsing="false" onAction="#deleteSelectedEventClicked" prefHeight="48.0" prefWidth="65.0">
                      <font>
                         <Font size="16.0" />
                      </font>
