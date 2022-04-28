@@ -25,7 +25,7 @@ public class ApplicationController implements DateSelectionListener, CalendarLis
     private List<CalendarElement> selectedElements;
 
     @FXML
-    private CheckBox wholeDayEventCheckBox;
+    private CheckBox wholeDayEventCheckBox, repeatingEventCheckBox;
 
     @FXML
     private Button prevBtn, nextBtn;
@@ -51,9 +51,9 @@ public class ApplicationController implements DateSelectionListener, CalendarLis
     @FXML
     private DatePicker eventStartDateInput, eventEndDateInput;
     @FXML
-    private TextField eventStartTimeInputH, eventStartTimeInputM;
+    private TextField eventStartTimeInputH, eventStartTimeInputM, eventEndTimeInputH, eventEndTimeInputM;
     @FXML
-    private TextField eventEndTimeInputH, eventEndTimeInputM;
+    private TextField eventOccurrencesInput, eventOccurrenceIntervalInput;
 
     @FXML
     private TextField todoTitleInput, todoTimeInputH, todoTimeInputM;
@@ -76,6 +76,13 @@ public class ApplicationController implements DateSelectionListener, CalendarLis
             @Override
             public void handle(ActionEvent actionEvent) {
                 setEventWholeDay(wholeDayEventCheckBox.isSelected());
+            }
+        });
+
+        repeatingEventCheckBox.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                setEventRepeating(repeatingEventCheckBox.isSelected());
             }
         });
     }
@@ -145,14 +152,25 @@ public class ApplicationController implements DateSelectionListener, CalendarLis
         String title = eventTitleInput.getText();
         try {
             Event newElement;
+            int occurrences = 1;
+            int occurrenceInterval = 0;
+
+            if (repeatingEventCheckBox.isSelected()) {
+                try {
+                    occurrences = Integer.parseInt(eventOccurrencesInput.getText());
+                    occurrenceInterval = Integer.parseInt(eventOccurrenceIntervalInput.getText());
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+            }
 
             if (wholeDayEventCheckBox.isSelected()) {
-                newElement = new Event(eventStartDateInput.getValue(), title, this.calendar);
+                newElement = new Event(eventStartDateInput.getValue(), title, occurrences, occurrenceInterval, this.calendar);
             } else {
                 LocalDateTime startDateTime = getDateTimeFromInputs(eventStartDateInput, eventStartTimeInputH, eventStartTimeInputM);
                 LocalDateTime endDateTime = getDateTimeFromInputs(eventEndDateInput, eventEndTimeInputH, eventEndTimeInputM);
 
-                newElement = new Event(startDateTime, endDateTime, title, this.calendar);
+                newElement = new Event(startDateTime, endDateTime, title, occurrences, occurrenceInterval, this.calendar);
             }
             calendar.addCalendarElement(newElement);
 
@@ -188,6 +206,11 @@ public class ApplicationController implements DateSelectionListener, CalendarLis
         eventEndDateInput.setDisable(wholeDay);
         eventEndTimeInputH.setDisable(wholeDay);
         eventEndTimeInputM.setDisable(wholeDay);
+    }
+
+    private void setEventRepeating(boolean repeating){
+        eventOccurrencesInput.setDisable(!repeating);
+        eventOccurrenceIntervalInput.setDisable(!repeating);
     }
 
     @FXML

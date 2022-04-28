@@ -18,7 +18,7 @@ public class Event extends CalendarElement{
         super(dateTime, title, listeners);
         this.setDuration(duration);
         this.setOccurrences(occurrences);
-        this.setOccurrenceInterval(interval);
+        this.setOccurrenceInterval(Math.max(0, interval));
         this.setListenable(true);
 
         if (this.occurrences < 1) { throw new IllegalArgumentException("An element must occur at least once!"); }

@@ -18,16 +18,16 @@
 
 <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Calendar.ApplicationController">
    <children>
-      <AnchorPane fx:id="overlayContainer" layoutX="-1.0" layoutY="-1.0" prefHeight="721.0" prefWidth="1281.0" style="-fx-view-order: -1;" visible="false">
+      <AnchorPane fx:id="overlayContainer" layoutX="-1.0" layoutY="-1.0" prefHeight="721.0" prefWidth="1281.0" style="-fx-view-order: -1;">
          <children>
             <Pane fx:id="createEventMenu" layoutX="452.0" layoutY="81.0" prefHeight="540.0" prefWidth="425.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #AAAAAA; -fx-view-order: -1;">
                <children>
-                  <Text layoutX="186.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TITTEL" textAlignment="CENTER">
+                  <Text layoutX="186.0" layoutY="108.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TITTEL" textAlignment="CENTER">
                      <font>
                         <Font size="19.0" />
                      </font>
                   </Text>
-                  <TextField fx:id="eventTitleInput" layoutX="99.0" layoutY="143.0" prefHeight="36.0" prefWidth="228.0" />
+                  <TextField fx:id="eventTitleInput" layoutX="99.0" layoutY="124.0" prefHeight="36.0" prefWidth="228.0" />
                   <Pane prefHeight="67.0" prefWidth="426.0" style="-fx-border-color: #AAAAAA;">
                      <children>
                         <Text layoutX="88.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="LAG NY HENDELSE" textAlignment="CENTER">
@@ -37,42 +37,60 @@
                         </Text>
                      </children>
                   </Pane>
-                  <Text layoutX="66.0" layoutY="227.0" strokeType="OUTSIDE" strokeWidth="0.0" text="STARTER:" textAlignment="CENTER">
+                  <Text layoutX="69.0" layoutY="203.0" strokeType="OUTSIDE" strokeWidth="0.0" text="STARTER:" textAlignment="CENTER">
                      <font>
                         <Font size="19.0" />
                      </font>
                   </Text>
-                  <DatePicker fx:id="eventStartDateInput" layoutX="54.0" layoutY="245.0" />
-                  <Button defaultButton="true" layoutX="176.0" layoutY="402.0" mnemonicParsing="false" onAction="#createNewEventClicked" text="FERDIG">
+                  <DatePicker fx:id="eventStartDateInput" layoutX="57.0" layoutY="221.0" />
+                  <Button defaultButton="true" layoutX="176.0" layoutY="440.0" mnemonicParsing="false" onAction="#createNewEventClicked" text="FERDIG">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Button>
-                  <Button layoutX="183.0" layoutY="466.0" mnemonicParsing="false" onAction="#hideOverlays" text="AVBRYT" />
-                  <TextField fx:id="eventStartTimeInputH" layoutX="263.0" layoutY="246.0" prefHeight="25.0" prefWidth="42.0" promptText="Time" />
-                  <TextField fx:id="eventStartTimeInputM" layoutX="322.0" layoutY="246.0" prefHeight="25.0" prefWidth="42.0" promptText="Min" />
-                  <Text layoutX="311.0" layoutY="262.0" strokeType="OUTSIDE" strokeWidth="0.0" text=":">
+                  <Button layoutX="183.0" layoutY="490.0" mnemonicParsing="false" onAction="#hideOverlays" text="AVBRYT" />
+                  <TextField fx:id="eventStartTimeInputH" layoutX="266.0" layoutY="222.0" prefHeight="25.0" prefWidth="42.0" promptText="Time" />
+                  <TextField fx:id="eventStartTimeInputM" layoutX="325.0" layoutY="222.0" prefHeight="25.0" prefWidth="42.0" promptText="Min" />
+                  <Text layoutX="314.0" layoutY="238.0" strokeType="OUTSIDE" strokeWidth="0.0" text=":">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Text>
-                  <Text layoutX="66.0" layoutY="321.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SLUTTER:" textAlignment="CENTER">
+                  <Text layoutX="67.0" layoutY="291.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SLUTTER:" textAlignment="CENTER">
                      <font>
                         <Font size="19.0" />
                      </font>
                   </Text>
-                  <DatePicker fx:id="eventEndDateInput" layoutX="58.0" layoutY="337.0" />
-                  <TextField fx:id="eventEndTimeInputH" layoutX="263.0" layoutY="338.0" prefHeight="25.0" prefWidth="42.0" promptText="Time" />
-                  <TextField fx:id="eventEndTimeInputM" layoutX="322.0" layoutY="338.0" prefHeight="25.0" prefWidth="42.0" promptText="Min" />
-                  <Text layoutX="312.0" layoutY="355.0" strokeType="OUTSIDE" strokeWidth="0.0" text=":">
+                  <DatePicker fx:id="eventEndDateInput" layoutX="59.0" layoutY="307.0" />
+                  <TextField fx:id="eventEndTimeInputH" layoutX="264.0" layoutY="308.0" prefHeight="25.0" prefWidth="42.0" promptText="Time" />
+                  <TextField fx:id="eventEndTimeInputM" layoutX="323.0" layoutY="308.0" prefHeight="25.0" prefWidth="42.0" promptText="Min" />
+                  <Text layoutX="313.0" layoutY="325.0" strokeType="OUTSIDE" strokeWidth="0.0" text=":">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Text>
-                  <CheckBox fx:id="wholeDayEventCheckBox" layoutX="276.0" layoutY="211.0" mnemonicParsing="false" text="Heldags" />
+                  <CheckBox fx:id="wholeDayEventCheckBox" layoutX="279.0" layoutY="187.0" mnemonicParsing="false" text="Heldags" />
+                  <TextField fx:id="eventOccurrencesInput" disable="true" layoutX="146.0" layoutY="386.0" prefHeight="25.0" prefWidth="42.0" promptText="Num" />
+                  <TextField fx:id="eventOccurrenceIntervalInput" disable="true" layoutX="264.0" layoutY="386.0" prefHeight="25.0" prefWidth="42.0" promptText="Num" />
+                  <Text layoutX="68.0" layoutY="405.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ANTALL:" textAlignment="CENTER">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="216.0" layoutY="405.0" strokeType="OUTSIDE" strokeWidth="0.0" text="HVER" textAlignment="CENTER">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="310.0" layoutY="406.0" strokeType="OUTSIDE" strokeWidth="0.0" text=". DAG" textAlignment="CENTER">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                  </Text>
+                  <CheckBox fx:id="repeatingEventCheckBox" layoutX="167.0" layoutY="353.0" mnemonicParsing="false" text="Gjentagende" />
                </children>
             </Pane>
-            <Pane fx:id="overlayBackdrop" layoutX="44.0" layoutY="34.0" opacity="0.37" prefHeight="605.0" prefWidth="1178.0" style="-fx-background-color: #000000;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <Pane fx:id="overlayBackdrop" layoutX="44.0" layoutY="34.0" opacity="0.37" prefHeight="605.0" prefWidth="1178.0" style="-fx-background-color: #000000;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
             <Pane fx:id="createTodoMenu" layoutX="452.0" layoutY="91.0" prefHeight="540.0" prefWidth="425.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #AAAAAA; -fx-view-order: -1;" visible="false">
                <children>
                   <Text layoutX="186.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TITTEL" textAlignment="CENTER">
@@ -113,7 +131,7 @@
             </Pane>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="mainPage" prefHeight="720.0" prefWidth="1280.0">
+      <AnchorPane fx:id="mainPage" prefHeight="720.0" prefWidth="1280.0" visible="false">
          <children>
             <Pane layoutX="231.0" layoutY="83.0" prefHeight="485.0" prefWidth="762.0" style="-fx-background-color: #FFFFFF;" stylesheets="@stylesheet.css" AnchorPane.leftAnchor="231.0" AnchorPane.topAnchor="83.0">
                <children>

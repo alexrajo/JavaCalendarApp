@@ -1,6 +1,7 @@
 package Calendar;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -59,8 +60,29 @@ public class Calendar implements ElementListener {
     public List<CalendarElement> getEventsOnDate(LocalDate date) {
 
         return this.getCalendarElements().stream().filter(
-                element -> element.getDateTime().toLocalDate().equals(date)).filter(
-                element -> element.getClass().equals(Event.class)).collect(Collectors.toList());
+                element -> element.getClass().equals(Event.class)).filter(
+                element -> {
+                    Event event = (Event) element;
+                    LocalDate eventDate = event.getDateTime().toLocalDate();
+
+                    if (eventDate.equals(date)) {
+                        return true;
+                    }
+
+                    try {
+                        long dayDifference = date.toEpochDay() - eventDate.toEpochDay();
+                        if (dayDifference < 0) {
+                            return false;
+                        }
+
+                        boolean linesUpWithOccurrenceInterval = dayDifference % event.getOccurrenceInterval() == 0;
+                        boolean isWithinOccurrenceRange = dayDifference <= (long) (event.getOccurrences()-1) * event.getOccurrenceInterval();
+
+                        return (linesUpWithOccurrenceInterval && isWithinOccurrenceRange);
+                    } catch(ArithmeticException e) {
+                        return false;
+                    }
+                }).collect(Collectors.toList());
     }
 
     private void updateFile() {

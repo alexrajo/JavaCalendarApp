@@ -92,7 +92,13 @@ public class TimeManager {
     public static String minutesToFormattedTime(int minutes) {
         int carryMinutes = minutes%60;
         int hours = minutes/60;
-        return String.valueOf(hours)+"t "+String.valueOf(carryMinutes)+"min";
+        int days = hours/24;
+        int carryHours = hours-days*24;
+
+        String daysText = days > 0 ? String.valueOf(days)+"d " : "";
+        String hoursText = carryHours > 0 ? String.valueOf(carryHours)+"t " : "";
+        String minutesText = carryMinutes > 0 ? String.valueOf(carryMinutes)+"min" : "";
+        return String.format("%s%s%s", daysText, hoursText, minutesText);
     }
 
     public static boolean isLeapYear(int year) {
