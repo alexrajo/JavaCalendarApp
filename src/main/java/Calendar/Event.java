@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
+import java.util.List;
 
 public class Event extends CalendarElement{
 
@@ -12,7 +14,7 @@ public class Event extends CalendarElement{
     private int occurrences;
     private int occurrenceInterval; //Defined in days between each occurrence
 
-    public Event(LocalDateTime dateTime, String title, int occurrences, int interval, int duration, ElementListener... listeners) {
+    public Event(LocalDateTime dateTime, String title, int occurrences, int interval, int duration, List<ElementListener> listeners) {
         super(dateTime, title, listeners);
         this.setDuration(duration);
         this.setOccurrences(occurrences);
@@ -24,6 +26,10 @@ public class Event extends CalendarElement{
         if (this.occurrences > 1 && this.occurrenceInterval < 1) {
             throw new IllegalArgumentException("Interval between occurrences must be a positive number!");
         }
+    }
+
+    public Event(LocalDateTime dateTime, String title, int occurrences, int interval, int duration, ElementListener... listeners) {
+        this(dateTime, title, occurrences, interval, duration, Arrays.asList(listeners));
     }
 
     public Event(LocalDateTime startDateTime, LocalDateTime endDateTime, String title, int occurrences, int interval, ElementListener... listeners) {

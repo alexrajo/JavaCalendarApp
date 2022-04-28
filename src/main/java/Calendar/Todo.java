@@ -1,15 +1,21 @@
 package Calendar;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 
 public class Todo extends CalendarElement {
 
     private boolean completed;
 
-    public Todo(LocalDateTime dateTime, String title, boolean completed, ElementListener... listeners) {
+    public Todo(LocalDateTime dateTime, String title, boolean completed, List<ElementListener> listeners) {
         super(dateTime, title, listeners);
         this.setCompleted(completed);
         this.setListenable(true);
+    }
+
+    public Todo(LocalDateTime dateTime, String title, boolean completed, ElementListener... listeners) {
+        this(dateTime, title, completed, Arrays.asList(listeners));
     }
 
     public Todo(LocalDateTime dateTime, String title, ElementListener... listeners) {

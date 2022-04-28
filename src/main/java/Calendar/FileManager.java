@@ -3,8 +3,10 @@ package Calendar;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -20,11 +22,11 @@ public class FileManager implements FileInterface {
 
     private final File file;
     private String fileName;
-    private Calendar calendar;
+    private List<ElementListener> elementListeners;
 
-    public FileManager(String fileName, Calendar calendar) {
+    public FileManager(String fileName, ElementListener... listeners) {
         this.fileName = fileName;
-        this.calendar = calendar;
+        this.elementListeners = Arrays.asList(listeners);
         this.file = new File(filePath + File.separator + fileName + ".txt");
 
         try {
@@ -73,11 +75,11 @@ public class FileManager implements FileInterface {
                                 Integer.parseInt(info.get(3)),
                                 Integer.parseInt(info.get(4)),
                                 Integer.parseInt(info.get(5)),
-                                this.calendar));
+                                this.elementListeners));
                     }
 
                     case "Todo" -> {
-                        elements.add(new Todo(dateTime, title, info.get(3).equals("1"), this.calendar));
+                        elements.add(new Todo(dateTime, title, info.get(3).equals("1"), this.elementListeners));
                     }
                 }
             }

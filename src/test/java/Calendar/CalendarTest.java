@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,13 +19,22 @@ public class CalendarTest {
 
     private Calendar calendar;
 
+    public static List<CalendarElement> createTestElements() {
+        List<CalendarElement> elements = new ArrayList<CalendarElement>();
+        elements.add(new Todo(testDateTimes.get(0), "Test #1"));
+        elements.add(new Todo(testDateTimes.get(1), "Test #2"));
+        elements.add(new Event(testDateTimes.get(2), "Test #3", 90));
+        return elements;
+    }
+
     @BeforeEach
     public void initialize() {
         this.calendar = new Calendar("calendarTestFile");
         calendar.clear();
-        calendar.addCalendarElement(new Todo(testDateTimes.get(0), "Test #1"));
-        calendar.addCalendarElement(new Todo(testDateTimes.get(1), "Test #2"));
-        calendar.addCalendarElement(new Event(testDateTimes.get(2), "Test #3", 90));
+        List<CalendarElement> testElements = createTestElements();
+        for (CalendarElement element : testElements) {
+            calendar.addCalendarElement(element);
+        }
     }
 
     @Test
@@ -48,6 +58,12 @@ public class CalendarTest {
     public void testClearCalendar() {
         calendar.clear();
         Assertions.assertTrue(calendar.getCalendarElements().isEmpty());
+    }
+
+    @Test
+    public void testGetEventsOnDate() {
+        Assertions.assertEquals(0, this.calendar.getEventsOnDate(testDateTimes.get(0).toLocalDate()).size());
+        Assertions.assertTrue(this.calendar.getEventsOnDate(testDateTimes.get(2).toLocalDate()).contains(calendar.getCalendarElement(2)));
     }
 
 }

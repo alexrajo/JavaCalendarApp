@@ -61,7 +61,7 @@ public class ApplicationController implements DateSelectionListener, CalendarLis
     private DatePicker todoDateInput;
 
     @FXML
-    public void initialize() {
+    private void initialize() {
         this.timemanager = new TimeManager();
         this.calendar = new Calendar("elements", this);
         this.overlays = Arrays.asList(createEventMenu, createTodoMenu);
@@ -81,7 +81,7 @@ public class ApplicationController implements DateSelectionListener, CalendarLis
     }
 
     @FXML
-    public void loadTodolist(){
+    private void loadTodolist(){
         this.todoList.getItems().clear();
         for (CalendarElement element: calendar.getCalendarElements()) {
             if (element instanceof Todo){
@@ -91,7 +91,7 @@ public class ApplicationController implements DateSelectionListener, CalendarLis
     }
 
     @FXML
-    public void loadEventList(){
+    private void loadEventList(){
         this.eventList.getItems().clear();
         for (CalendarElement element: this.selectedElements) {
             if (element instanceof Event) {
@@ -101,49 +101,47 @@ public class ApplicationController implements DateSelectionListener, CalendarLis
     }
 
     @FXML
-    public void changeMonthPrev(){
+    private void changeMonthPrev(){
         this.timemanager.changeMonthPrev();
         loadCalendar();
     }
 
     @FXML
-    public void changeMonthNext(){
+    private void changeMonthNext(){
         this.timemanager.changeMonthNext();
         loadCalendar();
     }
 
     @FXML
-    public void loadCalendar() {
+    private void loadCalendar() {
         String newCalendarTitle = String.format("%s %s", this.timemanager.monthToString(), String.valueOf(this.timemanager.getSelectedYear()));
         calendarTitle.setText(newCalendarTitle);
         calendarTitle.setTextAlignment(TextAlignment.CENTER);
         calendarGrid.setAlignment(Pos.CENTER);
         calendarGrid.getChildren().clear();
-        for (int i = 0; i < timemanager.getMonthDays()+timemanager.getStartDayAdjustment()-1; i++) {
-            int eventCount = 0;
 
+        for (int i = 0; i < timemanager.getMonthDays()+timemanager.getStartDayAdjustment()-1; i++) {
             if (i+1 >= timemanager.getStartDayAdjustment() && i-timemanager.getStartDayAdjustment()<timemanager.getMonthDays()) {
                 LocalDate cellDate = LocalDate.of(timemanager.getSelectedYear(), timemanager.getSelectedMonth(), i- timemanager.getStartDayAdjustment()+2);
-                for (CalendarElement c: calendar.getCalendarElements()) {
-                    if (c instanceof Event && c.getDateTime().toLocalDate().equals(cellDate)) eventCount++;
-                }
+                int eventCount = this.calendar.getEventsOnDate(cellDate).size();
+
                 calendarGrid.add(new CalendarCell(cellDate, eventCount, this), i%7, i/7);
             }
         }
     }
 
     @FXML
-    public void openCreateEventMenu() {
+    private void openCreateEventMenu() {
         this.setOverlay(createEventMenu);
     }
 
     @FXML
-    public void openCreateTodoMenu() {
+    private void openCreateTodoMenu() {
         this.setOverlay(createTodoMenu);
     }
 
     @FXML
-    public void createNewEventClicked() {
+    private void createNewEventClicked() {
         String title = eventTitleInput.getText();
         try {
             Event newElement;
@@ -165,7 +163,7 @@ public class ApplicationController implements DateSelectionListener, CalendarLis
         this.hideOverlays();
     }
 
-    public void deleteListItem(ListItem item) {
+    private void deleteListItem(ListItem item) {
         if (item != null) {
             this.selectedElements.remove(item.getElement());
             calendar.removeCalendarElement(item.getElement());
@@ -173,18 +171,18 @@ public class ApplicationController implements DateSelectionListener, CalendarLis
     }
 
     @FXML
-    public void deleteSelectedEventClicked() {
+    private void deleteSelectedEventClicked() {
         ListItem selected = (ListItem) eventList.getSelectionModel().getSelectedItem();
         deleteListItem(selected);
     }
 
     @FXML
-    public void deleteSelectedTodoClicked() {
+    private void deleteSelectedTodoClicked() {
         ListItem selected = (ListItem) todoList.getSelectionModel().getSelectedItem();
         deleteListItem(selected);
     }
 
-    public void setEventWholeDay(boolean wholeDay){
+    private void setEventWholeDay(boolean wholeDay){
         eventStartTimeInputH.setDisable(wholeDay);
         eventStartTimeInputM.setDisable(wholeDay);
         eventEndDateInput.setDisable(wholeDay);
@@ -193,7 +191,7 @@ public class ApplicationController implements DateSelectionListener, CalendarLis
     }
 
     @FXML
-    public void createNewTodoClicked() {
+    private void createNewTodoClicked() {
         String title = todoTitleInput.getText();
         try {
             LocalDateTime dateTime = getDateTimeFromInputs(todoDateInput, todoTimeInputH, todoTimeInputM);
@@ -208,7 +206,7 @@ public class ApplicationController implements DateSelectionListener, CalendarLis
     }
 
     @FXML
-    public void hideOverlays() {
+    private void hideOverlays() {
         this.overlayContainer.setVisible(false);
         mainPage.setDisable(false);
     }

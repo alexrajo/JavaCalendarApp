@@ -51,12 +51,12 @@ public class Calendar implements ElementListener {
         return this.elements.get(a);
     }
 
+    /**
+     Filtering out all elements that do not have the desired date,
+     returning the elements that are registered at the selected date
+     @param date A date to filter events by
+     */
     public List<CalendarElement> getEventsOnDate(LocalDate date) {
-
-        /**
-         Filtering out all elements that do not have the desired date,
-         returning the elements that are registered at the selected date
-         */
 
         return this.getCalendarElements().stream().filter(
                 element -> element.getDateTime().toLocalDate().equals(date)).filter(

@@ -1,6 +1,7 @@
 package Calendar;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class CalendarElement {
@@ -11,14 +12,16 @@ public abstract class CalendarElement {
     private List<ElementListener> listeners;
     private boolean listenable = false;
 
-    //Constructors
-    public CalendarElement(LocalDateTime dateTime, String title, ElementListener... listeners) throws IllegalArgumentException {
-        this.listeners = List.of(listeners);
+    public CalendarElement(LocalDateTime dateTime, String title, List<ElementListener> listeners) throws IllegalArgumentException {
+        this.listeners = listeners;
         this.setDateTime(dateTime);
         this.setTitle(title);
     }
 
-    //Public methods
+    public CalendarElement(LocalDateTime dateTime, String title, ElementListener... listeners) throws IllegalArgumentException {
+        this(dateTime, title, Arrays.asList(listeners));
+    }
+
     public LocalDateTime getDateTime() {
         return this.dateTime;
     }
@@ -49,6 +52,7 @@ public abstract class CalendarElement {
         if (!this.listenable) { return; }
 
         for (ElementListener listener : listeners) {
+            if (listener == null) { continue; }
             listener.elementChanged(this);
         }
     }
