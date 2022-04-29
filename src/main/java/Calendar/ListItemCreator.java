@@ -2,10 +2,9 @@ package Calendar;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.control.CheckBox;
 import javafx.scene.text.Text;
 
-public class ElementCreator {
+public class ListItemCreator {
 
     public static TodoListItem createTodoListItem(CalendarElement element){
         Todo todo = (Todo) element;

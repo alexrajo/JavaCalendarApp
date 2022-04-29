@@ -77,7 +77,7 @@ public class Event extends CalendarElement{
     public String toString() {
         return String.format("%s:\n%s",
                 this.getTitle(),
-                this.isWholeDay() ? "Hele dagen" : TimeManager.minutesToFormattedTime(this.getDuration()) + " fra " + this.getDateTime().toLocalTime().toString());
+                this.isWholeDay() ? "Hele dagen" : TimeManager.minutesToFormattedTime(this.getDuration()) + "fra " + this.getDateTime().toLocalTime().toString());
     }
 
     public int getDuration() {

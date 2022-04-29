@@ -1,6 +1,5 @@
 <h1>To do:</h1>
 <ol>
-    <li>Skriv tester for alle grunnklasser.</li>
     <li>Lage mulighet til å velge år og måned raskere.</li>
     <li>Gjør det mulig å oppdatere events og todo.</li>
     <li>EKSTRA: Legge til deadlines</li>
@@ -17,11 +16,4 @@
     <li>Brukergrensesnitt i FXML, med controller og app klasser</li>
     <li>Mulighet for lesing fra og skriving til fil</li>
     <li>Passende feilhåndtering</li>
-</ul>
-<br>
-<hr>
-<h1>Spørsmål til studass:</h1>
-<ul>
-    <li>Stemmer applikasjonen vår overens med view-controller-model?</li>
-    <li>Må alle klasser inn i sekvensdiagram?</li>
 </ul>

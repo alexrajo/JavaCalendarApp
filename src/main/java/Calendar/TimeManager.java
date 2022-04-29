@@ -2,7 +2,6 @@ package Calendar;
 
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 public class TimeManager {
@@ -16,11 +15,11 @@ public class TimeManager {
     private int startDayAdjustment;
     private int selectedMonth;
     private int monthOffset;
-    public static final List<String> monthString = Arrays.asList("Januar", "Februar", "Mars", "April", "Mai",
+    private static final List<String> monthStrings = Arrays.asList("Januar", "Februar", "Mars", "April", "Mai",
             "Juni", "Juli", "August", "September", "Oktober", "November", "Desember");
 
-    public TimeManager(){
-        this.currentDate = LocalDate.now();
+    public TimeManager(LocalDate date){
+        this.currentDate = date;
         this.initialDate = this.currentDate;
         this.selectedDate = this.currentDate;
         this.selectedYear = selectedDate.getYear();
@@ -29,14 +28,17 @@ public class TimeManager {
         this.currentMonthDay = selectedDate.getDayOfMonth();
         this.monthOffset = 0;
         setStartDayAdjustment();
+    }
 
+    public TimeManager() {
+        this(LocalDate.now());
     }
 
     public String monthToString() {
-       return monthString.get(selectedMonth-1);
+       return monthStrings.get(selectedMonth-1);
     }
 
-    public void setStartDayAdjustment(){
+    private void setStartDayAdjustment(){
         this.startDayAdjustment = LocalDate.of(this.selectedYear, this.selectedMonth, 1).getDayOfWeek().getValue();
     }
 
@@ -52,12 +54,12 @@ public class TimeManager {
 
     public void changeMonthPrev(){
         this.monthOffset--;
-        setSelectedDate(this.initialDate.minusMonths(-this.monthOffset));
+        setSelectedDate(this.getInitialDate().plusMonths(this.monthOffset));
     }
 
     public void changeMonthNext(){
         this.monthOffset++;
-        setSelectedDate(this.initialDate.plusMonths(this.monthOffset));
+        setSelectedDate(this.getInitialDate().plusMonths(this.monthOffset));
     }
 
     public LocalDate getCurrentDate() {
@@ -89,6 +91,10 @@ public class TimeManager {
         this.setStartDayAdjustment();
     }
 
+    /**
+     * @param minutes the amount of minutes you want to format
+     * @return The amount of time input in days, hours & minutes. The final return String excludes day, hour and minute values that are zero.
+     */
     public static String minutesToFormattedTime(int minutes) {
         int carryMinutes = minutes%60;
         int hours = minutes/60;
@@ -97,7 +103,7 @@ public class TimeManager {
 
         String daysText = days > 0 ? String.valueOf(days)+"d " : "";
         String hoursText = carryHours > 0 ? String.valueOf(carryHours)+"t " : "";
-        String minutesText = carryMinutes > 0 ? String.valueOf(carryMinutes)+"min" : "";
+        String minutesText = carryMinutes > 0 ? String.valueOf(carryMinutes)+"min " : "";
         return String.format("%s%s%s", daysText, hoursText, minutesText);
     }
 
@@ -110,14 +116,15 @@ public class TimeManager {
     }
 
     public void setSelectedYear(int selectedYear) {
-        this.selectedYear = selectedYear;
+        this.setMonthOffset(this.getMonthOffset()+(selectedYear-this.getSelectedYear())*12);
+        this.setSelectedDate(this.getSelectedDate().withYear(selectedYear));
     }
 
     public int getMonthDays() {
         return monthDays;
     }
 
-    public void setMonthDays(int monthDays) {
+    private void setMonthDays(int monthDays) {
         this.monthDays = monthDays;
     }
 
@@ -129,6 +136,9 @@ public class TimeManager {
         this.currentMonthDay = currentMonthDay;
     }
 
+    /**
+     * @return the amount of days further the first day of the current month should appear in the week
+     */
     public int getStartDayAdjustment() {
         return startDayAdjustment;
     }
@@ -141,8 +151,15 @@ public class TimeManager {
         return selectedMonth;
     }
 
-    public void setSelectedMonth(int selectedMonth) {
-        this.selectedMonth = selectedMonth;
+    public static String getMonthName(int monthNumber) {
+        return monthStrings.get(monthNumber-1);
+    }
+
+    public void setSelectedMonth(int selectedMonth) throws IllegalArgumentException {
+        if (selectedMonth < 1 || selectedMonth > 12) throw new IllegalArgumentException("Selected month must be between 1-12");
+
+        this.setMonthOffset(this.getMonthOffset()+(selectedMonth-this.getSelectedMonth()));
+        this.setSelectedDate(this.getSelectedDate().withMonth(selectedMonth));
     }
 
     public int getMonthOffset() {

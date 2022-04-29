@@ -6,7 +6,6 @@ import java.util.List;
 
 public abstract class CalendarElement {
 
-    //Attributes
     private LocalDateTime dateTime;
     private String title;
     private List<ElementListener> listeners;
@@ -35,6 +34,9 @@ public abstract class CalendarElement {
         return this.title;
     }
 
+    /**
+     * @param title the new title of the element (cannot contain a ',' because of resulting issues with data persistence)
+     */
     public void setTitle(String title) {
         if (title.contains(",")) throw new IllegalArgumentException("Title cannot contain a ','!");
 

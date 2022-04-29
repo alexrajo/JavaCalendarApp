@@ -34,7 +34,7 @@ public class ApplicationController implements DateSelectionListener, CalendarLis
     private ListView todoList, eventList;
 
     @FXML
-    private Text calendarTitle, eventPickedDateLabel;
+    private Text calendarTitle, eventPickedDateLabel, exceptionOutputLabel;
 
     @FXML
     private GridPane calendarGrid;
@@ -92,7 +92,7 @@ public class ApplicationController implements DateSelectionListener, CalendarLis
         this.todoList.getItems().clear();
         for (CalendarElement element: calendar.getCalendarElements()) {
             if (element instanceof Todo){
-                this.todoList.getItems().add(ElementCreator.createTodoListItem(element));
+                this.todoList.getItems().add(ListItemCreator.createTodoListItem(element));
             }
         }
     }
@@ -102,7 +102,7 @@ public class ApplicationController implements DateSelectionListener, CalendarLis
         this.eventList.getItems().clear();
         for (CalendarElement element: this.selectedElements) {
             if (element instanceof Event) {
-                this.eventList.getItems().add(ElementCreator.createEventListItem(element));
+                this.eventList.getItems().add(ListItemCreator.createEventListItem(element));
             }
         }
     }
@@ -160,7 +160,7 @@ public class ApplicationController implements DateSelectionListener, CalendarLis
                     occurrences = Integer.parseInt(eventOccurrencesInput.getText());
                     occurrenceInterval = Integer.parseInt(eventOccurrenceIntervalInput.getText());
                 } catch (NumberFormatException e) {
-                    e.printStackTrace();
+                    updateExcpetionOutput(e);
                 }
             }
 
@@ -175,16 +175,19 @@ public class ApplicationController implements DateSelectionListener, CalendarLis
             calendar.addCalendarElement(newElement);
 
         } catch (IllegalArgumentException e) {
-            e.printStackTrace();
+            updateExcpetionOutput(e);
         }
 
         this.hideOverlays();
     }
 
     private void deleteListItem(ListItem item) {
-        if (item != null) {
+        try {
+            if (item == null) throw new Exception("No item was selected to be deleted!");
             this.selectedElements.remove(item.getElement());
             calendar.removeCalendarElement(item.getElement());
+        } catch (Exception e) {
+            updateExcpetionOutput(e);
         }
     }
 
@@ -222,7 +225,7 @@ public class ApplicationController implements DateSelectionListener, CalendarLis
 
             calendar.addCalendarElement(newElement);
         } catch (IllegalArgumentException e) {
-            e.printStackTrace();
+            updateExcpetionOutput(e);
         }
 
         this.hideOverlays();
@@ -258,7 +261,7 @@ public class ApplicationController implements DateSelectionListener, CalendarLis
             try {
                 p.setVisible(p == pane);
             } catch (NullPointerException e) {
-                e.printStackTrace();
+                updateExcpetionOutput(e);
             }
         }
     }
@@ -277,7 +280,7 @@ public class ApplicationController implements DateSelectionListener, CalendarLis
         LocalDate date = selectedCell.getDate();
         eventPickedDateLabel.setText(String.format("%d. %s %d",
                 date.getDayOfMonth(),
-                TimeManager.monthString.get(date.getMonthValue()-1),
+                TimeManager.getMonthName(date.getMonthValue()),
                 date.getYear()
         ));
 
@@ -290,5 +293,9 @@ public class ApplicationController implements DateSelectionListener, CalendarLis
         loadCalendar();
         loadEventList();
         loadTodolist();
+    }
+
+    private void updateExcpetionOutput(Exception e) {
+        exceptionOutputLabel.setText(e.toString());
     }
 }
