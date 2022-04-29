@@ -2,6 +2,7 @@ package Calendar;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class EventTest {
@@ -14,6 +15,7 @@ public class EventTest {
     }
 
     @Test
+    @DisplayName("Test validation of constructor inputs")
     public void testConstructors() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> new Event(CalendarTest.testDateTimes.get(0), "Test", 0, 1, 90));
         Assertions.assertThrows(IllegalArgumentException.class, () -> new Event(CalendarTest.testDateTimes.get(0), "Test", 2, 0, 90));
@@ -24,12 +26,14 @@ public class EventTest {
     }
 
     @Test
+    @DisplayName("Test if datetime and duration is set properly when setWholeDay() is fired")
     public void testSetWholeDay() {
         event.setWholeDay();
         Assertions.assertTrue(event.isWholeDay());
     }
 
     @Test
+    @DisplayName("Test validation and general functionality in setTitle() method")
     public void testSetTitle() {
         event.setTitle("DifferentTitle");
         Assertions.assertEquals("DifferentTitle", event.getTitle());

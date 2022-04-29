@@ -2,6 +2,7 @@ package Calendar;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class TimeManagerTest {
@@ -14,11 +15,13 @@ public class TimeManagerTest {
     }
 
     @Test
+    @DisplayName("Test that startDayAdjustment is calculated correctly when class is instantiated")
     public void testConstructor() {
         Assertions.assertEquals(5, timeManager.getStartDayAdjustment());
     }
 
     @Test
+    @DisplayName("Test that setting selectedDate works, and that startDayAdjustment is correctly calculated")
     public void testSetSelectedDate() {
         timeManager.setSelectedDate(CalendarTest.testDateTimes.get(1).toLocalDate());
         Assertions.assertEquals(CalendarTest.testDateTimes.get(1).toLocalDate(), timeManager.getSelectedDate());
@@ -26,6 +29,7 @@ public class TimeManagerTest {
     }
 
     @Test
+    @DisplayName("Test that changing selected month updates the selectedDate correctly")
     public void testChangeMonth() {
         timeManager.changeMonthNext();
         Assertions.assertEquals(5, timeManager.getSelectedMonth());

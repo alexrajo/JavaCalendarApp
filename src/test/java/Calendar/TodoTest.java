@@ -2,6 +2,7 @@ package Calendar;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class TodoTest {
@@ -14,6 +15,7 @@ public class TodoTest {
     }
 
     @Test
+    @DisplayName("Test that setting completed works")
     public void testSetCompleted() {
         this.todo.setCompleted(true);
         Assertions.assertTrue(this.todo.isCompleted());

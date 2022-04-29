@@ -2,6 +2,7 @@ package Calendar;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class FileManagerTest {
         this.fileManager.writeToFile(new ArrayList<CalendarElement>());
     }
 
-    private void compareLists(List<CalendarElement> list1, List<CalendarElement> list2) {
+    public static void compareLists(List<CalendarElement> list1, List<CalendarElement> list2) {
         Assertions.assertEquals(list1.size(), list2.size());
         for (int i = 0; i < list1.size(); i++) {
             CalendarElement a = list1.get(i);
@@ -27,6 +28,7 @@ public class FileManagerTest {
     }
 
     @Test
+    @DisplayName("Test that information integrity is intact when reading from and writing to file")
     public void testReadAndWrite() {
         List<CalendarElement> elements = CalendarTest.createTestElements();
         this.fileManager.writeToFile(elements);
@@ -36,6 +38,7 @@ public class FileManagerTest {
     }
 
     @Test
+    @DisplayName("Test that data written to file is persistent")
     public void testPersistence() {
         List<CalendarElement> elements = CalendarTest.createTestElements();
         this.fileManager.writeToFile(elements);
