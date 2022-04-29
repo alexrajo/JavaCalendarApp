@@ -37,7 +37,8 @@ public abstract class CalendarElement {
     /**
      * @param title the new title of the element (cannot contain a ',' because of resulting issues with data persistence)
      */
-    public void setTitle(String title) {
+    public void setTitle(String title) throws IllegalArgumentException {
+        if (title.equals("") || title == null) throw new IllegalArgumentException("You must input a title!");
         if (title.contains(",")) throw new IllegalArgumentException("Title cannot contain a ','!");
 
         this.title = title;

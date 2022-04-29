@@ -63,24 +63,28 @@ public class FileManager implements FileInterface {
 
             Scanner scanner = new Scanner(this.file);
             while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                List<String> info = List.of(line.split(","));
+                try {
+                    String line = scanner.nextLine();
+                    List<String> info = List.of(line.split(","));
 
-                LocalDateTime dateTime = LocalDateTime.parse(info.get(1));
-                String title = info.get(2);
+                    LocalDateTime dateTime = LocalDateTime.parse(info.get(1));
+                    String title = info.get(2);
 
-                switch (info.get(0)) {
-                    case "Event" -> {
-                        elements.add(new Event(dateTime, title,
-                                Integer.parseInt(info.get(3)),
-                                Integer.parseInt(info.get(4)),
-                                Integer.parseInt(info.get(5)),
-                                this.elementListeners));
+                    switch (info.get(0)) {
+                        case "Event" -> {
+                            elements.add(new Event(dateTime, title,
+                                    Integer.parseInt(info.get(3)),
+                                    Integer.parseInt(info.get(4)),
+                                    Integer.parseInt(info.get(5)),
+                                    this.elementListeners));
+                        }
+
+                        case "Todo" -> {
+                            elements.add(new Todo(dateTime, title, info.get(3).equals("1"), this.elementListeners));
+                        }
                     }
-
-                    case "Todo" -> {
-                        elements.add(new Todo(dateTime, title, info.get(3).equals("1"), this.elementListeners));
-                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
 

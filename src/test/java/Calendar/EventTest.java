@@ -34,6 +34,7 @@ public class EventTest {
         event.setTitle("DifferentTitle");
         Assertions.assertEquals("DifferentTitle", event.getTitle());
         Assertions.assertThrows(IllegalArgumentException.class, () -> event.setTitle("Hello, goodbye!"));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> event.setTitle(""));
     }
 
 }
