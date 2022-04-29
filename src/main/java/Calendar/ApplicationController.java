@@ -250,7 +250,6 @@ public class ApplicationController implements DateSelectionListener, CalendarLis
         return LocalDateTime.of(datePicker.getValue(), LocalTime.of(h, m));
     }
 
-    // Kan eventuelt bruke funksjonelle grensesnitt for å stykke opp kode mer slik at man unngår repeterende kode
     private void setOverlay(Pane pane) {
         if (this.overlays.contains(pane)) {
             mainPage.setDisable(true);
